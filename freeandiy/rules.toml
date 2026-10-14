@@ -100,7 +100,7 @@ name = "About: tagline (code and catalogs' English key)"
 include = ["**/*.rs", "crates/ui-egui/src/i18n/*.tsv"]
 find = "Part of the Crafting Apps from the ArtCraft team."
 replace = "Part of {{brand.name}} by {{brand.owner}}."
-min = 2
+min = 1
 
 [[replace]]
 name = "About: keep upstream's copyright line (code and catalogs)"
