@@ -43,18 +43,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Linux system dependencies (egui/winit/rfd)
+      - name: App settings
+        run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
+      - name: Install Linux system dependencies (egui/winit/rfd, audio, app.toml build.apt)
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev \
+            libasound2-dev libudev-dev $FA_APT
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
           key: freeandiy-release
           save-if: ${{ github.ref == 'refs/heads/main' }}
-      - name: App settings
-        run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
       - name: Build
         run: cargo build --release --locked $FA_BINS $FA_FEATURES
       - name: No upstream branding in the binaries
@@ -68,12 +69,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: App settings
         run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
-      - name: Install Linux system dependencies (egui/winit/rfd)
+      - name: Install Linux system dependencies (egui/winit/rfd, audio, app.toml build.apt)
         if: env.FA_CI_TESTS == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev \
+            libasound2-dev libudev-dev $FA_APT
       - uses: dtolnay/rust-toolchain@stable
         if: env.FA_CI_TESTS == 'true'
       - uses: Swatinem/rust-cache@v2

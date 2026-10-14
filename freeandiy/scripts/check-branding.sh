@@ -23,10 +23,12 @@ WEB_INDEX="$(fa_get build.web_index "")"
 EXTRA_ALLOW="$(fa_get check.allow "")"
 read -r -a RS_EXCLUDE <<<"$(fa_get check.rs_exclude ":!xtask/**")"
 
+# GNU strings reads UTF-8 text whole with -e S (translations with accents); BSD strings can't.
+if strings -e S -n 6 /dev/null >/dev/null 2>&1; then STRINGS="strings -e S -n 6"; else STRINGS="strings -n 6"; fi
 BANNED='ArtCraft|artcraft|storyteller|getartcraft|discord\.gg|Crafting Apps'
 # Allowed mentions: the About attribution (English and translated), upstream's copyright line, upstream's
 # credit for its own work, and app-specific fixtures (check.allow).
-ALLOWED_STRINGS="based on the open-source project|affiliated with the ArtCraft team|ArtCraft Team and contributors|ArtCraft Team a prispievatelia|ArtCraft Team and the $UP (contributors|authors)|the $UP authors|$UP.s own|^$UP\$"
+ALLOWED_STRINGS="based on the open-source project|affiliated with the ArtCraft team|ArtCraft Team and contributors|ArtCraft Team a prispievatelia|nie je spojený s tímom ArtCraft|<!--.*-->|ArtCraft Team and the $UP (contributors|authors)|the $UP authors|by (the )?$UP contributors|(\(c\)|©|Copyright).*ArtCraft|$UP.s own|^$UP\$"
 [ -n "$EXTRA_ALLOW" ] && ALLOWED_STRINGS="$ALLOWED_STRINGS|$EXTRA_ALLOW"
 # Where upstream's names may appear: licences and notices (must stay), upstream's developer
 # docs (not shipped), credits, code comments about upstream work, and our own freeandiy/ sources.
@@ -73,7 +75,7 @@ for target in "$@"; do
   fi
   bad=0
   for f in "${files[@]}"; do
-    hits="$(strings -n 6 "$f" 2>/dev/null | grep -E "$BANNED|$UP" | grep -v -E "$ALLOWED_STRINGS" | sort -u | head -20 || true)"
+    hits="$($STRINGS "$f" 2>/dev/null | grep -E "$BANNED|$UP" | grep -v -E "$ALLOWED_STRINGS" | sort -u | head -20 || true)"
     if [ -n "$hits" ]; then
       echo "  $f:"
       echo "$hits" | sed 's/^/    /' | cut -c1-200
