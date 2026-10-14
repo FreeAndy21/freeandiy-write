@@ -4,8 +4,13 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 publish = false
-default-run = "wordcraft"
+default-run = "freeandiy-write"
 description = "WordCraft desktop app"
+
+# FreeANDIY: the executable carries the product name; the package keeps upstream's.
+[[bin]]
+name = "freeandiy-write"
+path = "src/main.rs"
 
 [lints]
 workspace = true

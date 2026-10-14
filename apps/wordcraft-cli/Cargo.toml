@@ -6,8 +6,9 @@ license.workspace = true
 publish = false
 description = "WordCraft command line: convert, inspect, render, run commands, MCP server"
 
+# FreeANDIY: the executable carries the product name; the package keeps upstream's.
 [[bin]]
-name = "wordcraft-cli"
+name = "freeandiy-write-cli"
 path = "src/main.rs"
 
 [lints]

@@ -1704,7 +1704,7 @@ fn set_author_refuses_blank_names_and_clamps_long_ones() {
     let mut s = s();
     for bad in [json!(null), json!({}), json!({"name": 5}), json!({"name": ""}), json!({"name": " \t\n "}), json!({"name": "\u{0}\u{7}"})] {
         assert!(s.run("file.setAuthor", &bad).is_err(), "{bad} should be refused");
-        assert_eq!(s.author, "WordCraft User", "a refused name leaves the author alone");
+        assert_eq!(s.author, "FreeANDIY Write User", "a refused name leaves the author alone");
     }
     run(&mut s, "file.setAuthor", json!({"name": "Ada\u{0}\u{1b} Lovelace"}));
     assert_eq!(s.author, "Ada Lovelace", "control characters can't reach the saved XML");
@@ -5231,7 +5231,7 @@ fn insert_picture_takes_a_windows_metafile() {
 
 #[test]
 fn exported_page_images_draw_headers_at_full_strength() {
-    // file.exportPng (and `wordcraft-cli render`) drew headers and footers dimmed, as the screen
+    // file.exportPng (and `freeandiy-write-cli render`) drew headers and footers dimmed, as the screen
     // does while the body is edited; Word's exported pages and WordCraft's PDF don't.
     let mut s = s();
     run(&mut s, "text.insert", json!({"text": "Body"}));

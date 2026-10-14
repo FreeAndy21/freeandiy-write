@@ -19,7 +19,7 @@ use wordcraft_engine::Session;
 use wordcraft_engine::file_access::{self, AutomationRoots};
 
 /// Methods that need the desktop app.
-pub const NEEDS_APP: &str = "needs the desktop app: start `wordcraft --control 7981` and run `wordcraft-cli mcp --connect 127.0.0.1:7981`";
+pub const NEEDS_APP: &str = "needs the desktop app: start `wordcraft --control 7981` and run `freeandiy-write-cli mcp --connect 127.0.0.1:7981`";
 
 /// An in-process session.
 pub struct Headless {
@@ -29,7 +29,7 @@ pub struct Headless {
 
 impl Headless {
     /// Confine every file the session's commands read and write to `roots`
-    /// (`wordcraft-cli mcp --automation-read-root … --automation-write-root …`).
+    /// (`freeandiy-write-cli mcp --automation-read-root … --automation-write-root …`).
     pub fn with_automation_roots(mut self, roots: Option<Arc<AutomationRoots>>) -> Self {
         self.roots = roots;
         self

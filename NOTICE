@@ -3,9 +3,9 @@ Copyright (c) 2026 ArtCraft Team and the WordCraft contributors.
 Licensed under the MIT License or the Apache License, Version 2.0, at your option
 (LICENSE-MIT, LICENSE-APACHE).
 
-The ArtCraft name, wordmark and logos in docs/brand/ are trademarks of the ArtCraft Team. They are
-not open source and are not covered by the license above; their terms are in
-docs/brand/LICENSE-brand.txt.
+The ArtCraft name, wordmark and logos are trademarks of the ArtCraft Team. They are not open
+source and are not covered by the license above. As their terms require of modified versions,
+the FreeANDIY fork has removed them (upstream's docs/brand/ directory is not part of this tree).
 
 Third-party material
 
@@ -79,3 +79,26 @@ Rust dependencies (egui, eframe, vello_cpu, skrifa, harfrust, krilla, quick-xml,
 are permissively licensed (MIT/Apache-2.0/BSD/ISC/Zlib) and fetched through crates.io.
 
 No Microsoft, Adobe, Avid or Autodesk icons, images, templates or artwork are included.
+
+-------------------------------------------------------------------------------------------------
+FreeANDIY Write
+
+FreeANDIY Write is a modified version of WordCraft, made by Free Andy Agency
+(https://freeandy.agency). FreeANDIY is not affiliated with, sponsored or endorsed by the ArtCraft
+Team.
+Modifications Copyright (c) 2026 Free Andy Agency, licensed like WordCraft under the MIT License
+or the Apache License, Version 2.0, at your option.
+
+Changed files (Apache-2.0 section 4(b)): FreeANDIY's changes are generated from the freeandiy/
+directory by freeandiy/tools/rebrand: the patches in freeandiy/patches/, the text rules in
+freeandiy/rules.toml and the files copied from freeandiy/. Every file that differs from upstream
+WordCraft is listed by `git diff upstream-main main --stat`, and CHANGELOG-FREEANDIY.md
+summarises the changes. New files carry a "Modified-by: FreeANDIY" header where their format
+allows comments.
+
+The FreeANDIY and Free Andy Agency names, the angel Andy, the lettering, logotypes, seal and app
+icons are protected by copyright, are the property of Free Andy Agency and are NOT covered by
+the licenses above; see freeandiy/assets/brand/LICENSE-brand.txt.
+
+FreeANDIY bundles IBM Plex Sans and IBM Plex Mono (IBM Corp.) and Roboto (The Roboto Project
+Authors) under the SIL Open Font License 1.1; see freeandiy/assets/fonts/OFL-*.txt.

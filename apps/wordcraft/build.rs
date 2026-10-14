@@ -7,19 +7,19 @@
 
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
-    println!("cargo:rerun-if-changed=../../assets/app-icon/wordcraft.ico");
+    println!("cargo:rerun-if-changed=../../assets/app-icon/freeandiy-write.ico");
     println!("cargo:rerun-if-env-changed=WORDCRAFT_REQUIRE_WINRES");
     if std::env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {
         return;
     }
     let mut res = winresource::WindowsResource::new();
-    res.set_icon("../../assets/app-icon/wordcraft.ico")
-        .set("ProductName", "WordCraft")
-        .set("FileDescription", "WordCraft word processor")
+    res.set_icon("../../assets/app-icon/freeandiy-write.ico")
+        .set("ProductName", "FreeANDIY Write")
+        .set("FileDescription", "FreeANDIY Write word processor")
         .set("CompanyName", "Learning Machines LLC")
-        .set("LegalCopyright", "Copyright (c) the WordCraft authors. MIT OR Apache-2.0.")
-        .set("OriginalFilename", "wordcraft.exe")
-        .set("InternalName", "wordcraft");
+        .set("LegalCopyright", "Copyright (c) Free Andy Agency and the WordCraft authors. MIT OR Apache-2.0.")
+        .set("OriginalFilename", "freeandiy-write.exe")
+        .set("InternalName", "freeandiy-write");
     if let Err(e) = res.compile() {
         if std::env::var_os("WORDCRAFT_REQUIRE_WINRES").is_some() {
             eprintln!("embedding Windows resources failed: {e}");

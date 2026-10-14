@@ -47,9 +47,12 @@ warn() {
 # Copy licence and readme files that exist into a package directory.
 copy_docs() {
   local dest="$1" f
-  for f in README.md LICENSE LICENSE-MIT LICENSE-APACHE COPYRIGHT; do
+  for f in README.md LICENSE LICENSE-MIT LICENSE-APACHE COPYRIGHT NOTICE ATTRIBUTION.md CHANGELOG-FREEANDIY.md; do
     if [ -f "$ROOT/$f" ]; then cp "$ROOT/$f" "$dest/"; fi
   done
+  # FreeANDIY: the bundled UI fonts' licences and the brand terms (Apache-2.0 4(d): NOTICE above).
+  cp "$ROOT"/freeandiy/assets/fonts/OFL-*.txt "$dest/"
+  cp "$ROOT/freeandiy/assets/brand/LICENSE-brand.txt" "$dest/LICENSE-FreeANDIY-brand.txt"
   copy_font_licences "$dest"
 }
 

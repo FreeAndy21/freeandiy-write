@@ -1,0 +1,140 @@
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
+# Shared by every FreeANDIY app (source: FreeAndy21/freeandiy); app settings: freeandiy/app.toml.
+# Release a FreeANDIY app: build every package with packaging/, check the branding, and attach
+# the files to a draft GitHub release (published by hand after a look).
+#
+# Push a tag `v<version>` (e.g. v0.8.0-fa.1) or run it by hand. Signing secrets are optional:
+# without them macOS builds are ad-hoc signed and Windows builds unsigned (the scripts warn).
+#   APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD, KEYCHAIN_PASSWORD   Developer ID (.p12, base64)
+#   APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID                           notarization
+#   WINDOWS_CERTIFICATE, WINDOWS_CERTIFICATE_PASSWORD                 Authenticode (.pfx, base64)
+# Secrets are read here only, never committed.
+name: FreeANDIY release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TRUNK_VERSION: 0.21.14
+  NFPM_VERSION: 2.43.0
+
+jobs:
+  macos:
+    runs-on: macos-14
+    env:
+      APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - name: Import signing certificate
+        if: env.APPLE_CERTIFICATE != ''
+        env:
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: packaging/macos/import-cert.sh
+      - name: Package
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: packaging/macos/package.sh --arch universal
+      - name: Branding check (binaries)
+        run: |
+          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          freeandiy/scripts/check-branding.sh $(printf 'target/aarch64-apple-darwin/release/%s ' $FA_EXES)
+      - uses: actions/upload-artifact@v4
+        with: { name: macos, path: dist/release/*, if-no-files-found: error }
+
+  linux:
+    runs-on: ubuntu-22.04 # oldest supported glibc, so the AppImage runs on newer distros
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build and packaging dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev \
+            desktop-file-utils appstream zsync
+          curl -fsSL "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_Linux_x86_64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin nfpm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Package
+        run: packaging/linux/package.sh
+      - name: Branding check (binaries)
+        run: |
+          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          freeandiy/scripts/check-branding.sh $(printf 'target/release/%s ' $FA_EXES)
+      - uses: actions/upload-artifact@v4
+        with: { name: linux, path: dist/release/*, if-no-files-found: error }
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Install WiX
+        run: |
+          dotnet tool install --global wix --version 5.0.2
+          wix extension add -g WixToolset.UI.wixext/5.0.2 WixToolset.Util.wixext/5.0.2
+      - name: Package
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: packaging/windows/package.ps1 -Arch x64
+      - uses: actions/upload-artifact@v4
+        with: { name: windows, path: dist/release/*, if-no-files-found: error }
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - name: Install trunk
+        run: |
+          curl -fsSL "https://github.com/trunk-rs/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar -xz -C "$HOME/.cargo/bin" trunk
+      - name: Package
+        run: |
+          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          env $FA_WEB_ENV packaging/web/package.sh
+      - name: Branding check (web build)
+        run: freeandiy/scripts/check-branding.sh dist/web
+      - uses: actions/upload-artifact@v4
+        with: { name: web, path: dist/release/*, if-no-files-found: error }
+
+  release:
+    needs: [macos, linux, windows, web]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: App settings
+        run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
+      - uses: actions/download-artifact@v4
+        with: { path: release-files, merge-multiple: true }
+      - name: Checksums
+        run: cd release-files && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
+      - name: Draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || format('build-{0}', github.run_number) }}
+        run: |
+          gh release create "$TAG" release-files/* --repo "$GITHUB_REPOSITORY" --draft \
+            --title "$FA_NAME $TAG" \
+            --notes "$FA_NAME, based on $FA_UPSTREAM_NAME (MIT/Apache-2.0). See CHANGELOG-FREEANDIY.md."

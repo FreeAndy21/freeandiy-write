@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Build, sign and (optionally) notarize the macOS release artifacts:
 #
-#   $DIST/wordcraft-<version>-macos-<arch>.dmg          WordCraft.app on a drag-to-Applications DMG
-#   $DIST/wordcraft-cli-<version>-macos-<arch>.zip      the headless CLI
+#   $DIST/freeandiy-write-<version>-macos-<arch>.dmg          FreeANDIY Write.app on a drag-to-Applications DMG
+#   $DIST/freeandiy-write-cli-<version>-macos-<arch>.zip      the headless CLI
 #
 # Usage: packaging/macos/package.sh [--arch universal|aarch64|x86_64] [--skip-build]
 #
@@ -39,9 +39,9 @@ export MACOSX_DEPLOYMENT_TARGET=11.0
 IDENTITY="${MACOS_SIGN_IDENTITY:--}"
 SHORT_VERSION="${VERSION%%-*}"
 WORK="$CARGO_TARGET_DIR/macos-package"
-APP="$WORK/WordCraft.app"
-DMG="$DIST/wordcraft-$VERSION-macos-$ARCH.dmg"
-CLI_ZIP="$DIST/wordcraft-cli-$VERSION-macos-$ARCH.zip"
+APP="$WORK/FreeANDIY Write.app"
+DMG="$DIST/freeandiy-write-$VERSION-macos-$ARCH.dmg"
+CLI_ZIP="$DIST/freeandiy-write-cli-$VERSION-macos-$ARCH.zip"
 
 NOTARIZE=0
 if [ "$IDENTITY" = "-" ]; then
@@ -52,7 +52,7 @@ else
   warn "macOS: APPLE_ID / APPLE_PASSWORD / APPLE_TEAM_ID incomplete; signed but not notarized"
 fi
 
-echo "==> WordCraft $VERSION for macOS ($ARCH), identity: $IDENTITY, notarize: $NOTARIZE"
+echo "==> FreeANDIY Write $VERSION for macOS ($ARCH), identity: $IDENTITY, notarize: $NOTARIZE"
 
 # ---- build -------------------------------------------------------------------------------------
 if [ "$SKIP_BUILD" = 0 ]; then
@@ -63,7 +63,7 @@ fi
 
 rm -rf "$WORK"
 mkdir -p "$WORK/bin"
-for bin in wordcraft wordcraft-cli; do
+for bin in freeandiy-write freeandiy-write-cli; do
   inputs=()
   for t in "${TARGETS[@]}"; do inputs+=("$CARGO_TARGET_DIR/$t/release/$bin"); done
   lipo -create -output "$WORK/bin/$bin" "${inputs[@]}"
@@ -97,12 +97,12 @@ notarize() {
   fi
 }
 
-# ---- WordCraft.app ----------------------------------------------------------------------------
+# ---- FreeANDIY Write.app ----------------------------------------------------------------------------
 echo "==> assembling $APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 # Executable and icon carry the display name (CFBundleExecutable / CFBundleIconFile).
-cp "$WORK/bin/wordcraft" "$APP/Contents/MacOS/WordCraft"
-cp "$ROOT/assets/app-icon/wordcraft.icns" "$APP/Contents/Resources/WordCraft.icns"
+cp "$WORK/bin/freeandiy-write" "$APP/Contents/MacOS/FreeANDIY Write"
+cp "$ROOT/assets/app-icon/freeandiy-write.icns" "$APP/Contents/Resources/FreeANDIY Write.icns"
 # Licences of the embedded craft-fonts fonts (only when built with CRAFT_FONTS_DIR).
 copy_font_licences "$APP/Contents/Resources"
 sed -e "s/@VERSION@/$VERSION/g" -e "s/@SHORT_VERSION@/$SHORT_VERSION/g" \
@@ -113,13 +113,13 @@ printf 'APPL????' >"$APP/Contents/PkgInfo"
 
 # Sign inside-out: nested code first, then the bundle itself (no --deep on the final signature).
 # Today the only nested code is the main executable; frameworks/helpers would be signed here too.
-sign --options runtime --entitlements "$HERE/entitlements.plist" "$APP/Contents/MacOS/WordCraft"
+sign --options runtime --entitlements "$HERE/entitlements.plist" "$APP/Contents/MacOS/FreeANDIY Write"
 sign --options runtime --entitlements "$HERE/entitlements.plist" "$APP"
 codesign --verify --strict --deep --verbose=2 "$APP"
 
 if [ "$NOTARIZE" = 1 ]; then
-  ditto -c -k --keepParent "$APP" "$WORK/WordCraft-notarize.zip"
-  notarize "$WORK/WordCraft-notarize.zip"
+  ditto -c -k --keepParent "$APP" "$WORK/FreeANDIY Write-notarize.zip"
+  notarize "$WORK/FreeANDIY Write-notarize.zip"
   xcrun stapler staple "$APP"
   xcrun stapler validate "$APP"
   spctl --assess --type execute -vvv "$APP"
@@ -129,7 +129,7 @@ fi
 echo "==> building $DMG"
 STAGE="$WORK/dmg"
 mkdir -p "$STAGE"
-ditto "$APP" "$STAGE/WordCraft.app"
+ditto "$APP" "$STAGE/FreeANDIY Write.app"
 ln -s /Applications "$STAGE/Applications"
 # Finder window layout: background, icon size and positions (packaging/macos/dmg/README.md).
 mkdir -p "$STAGE/.background"
@@ -139,7 +139,7 @@ rm -f "$DMG" "$WORK/raw.dmg"
 # makehybrid + convert builds the image without attaching a device, unlike `create -srcfolder`,
 # which is flaky on CI runners ("Resource busy") and hangs in sandboxed sessions.
 # The volume name has no version: .DS_Store finds the background through an alias that includes it.
-hdiutil makehybrid -hfs -hfs-volume-name "WordCraft" -hfs-openfolder "$STAGE" -o "$WORK/raw.dmg" "$STAGE"
+hdiutil makehybrid -hfs -hfs-volume-name "FreeANDIY Write" -hfs-openfolder "$STAGE" -o "$WORK/raw.dmg" "$STAGE"
 hdiutil convert "$WORK/raw.dmg" -format UDZO -imagekey zlib-level=9 -o "$DMG"
 rm -f "$WORK/raw.dmg"
 sign "$DMG"
@@ -153,17 +153,17 @@ fi
 
 # ---- CLI ---------------------------------------------------------------------------------------
 echo "==> building $CLI_ZIP"
-CLI_DIR="$WORK/wordcraft-cli-$VERSION-macos-$ARCH"
+CLI_DIR="$WORK/freeandiy-write-cli-$VERSION-macos-$ARCH"
 mkdir -p "$CLI_DIR"
-cp "$WORK/bin/wordcraft-cli" "$CLI_DIR/"
+cp "$WORK/bin/freeandiy-write-cli" "$CLI_DIR/"
 copy_docs "$CLI_DIR"
-sign --options runtime "$CLI_DIR/wordcraft-cli"
-codesign --verify --strict --verbose=2 "$CLI_DIR/wordcraft-cli"
+sign --options runtime "$CLI_DIR/freeandiy-write-cli"
+codesign --verify --strict --verbose=2 "$CLI_DIR/freeandiy-write-cli"
 rm -f "$CLI_ZIP"
 ditto -c -k --norsrc --noextattr --keepParent "$CLI_DIR" "$CLI_ZIP"
 # A bare Mach-O can't carry a stapled ticket; Gatekeeper looks the notarization up online.
 if [ "$NOTARIZE" = 1 ]; then notarize "$CLI_ZIP"; fi
 
-"$WORK/bin/wordcraft-cli" --version
+"$WORK/bin/freeandiy-write-cli" --version
 echo "==> done"
 ls -lh "$DMG" "$CLI_ZIP"

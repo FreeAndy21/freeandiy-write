@@ -8,9 +8,9 @@ use std::path::{Path, PathBuf};
 /// `$XDG_CONFIG_HOME/wordcraft` or `~/.config/wordcraft`.
 pub fn settings_dir() -> Option<PathBuf> {
     if cfg!(target_os = "macos") {
-        std::env::var_os("HOME").map(|h| PathBuf::from(h).join("Library/Application Support/WordCraft"))
+        std::env::var_os("HOME").map(|h| PathBuf::from(h).join("Library/Application Support/FreeANDIY Write"))
     } else if cfg!(windows) {
-        std::env::var_os("APPDATA").map(|a| PathBuf::from(a).join("WordCraft"))
+        std::env::var_os("APPDATA").map(|a| PathBuf::from(a).join("FreeANDIY Write"))
     } else {
         std::env::var_os("XDG_CONFIG_HOME")
             .map(PathBuf::from)
@@ -59,7 +59,7 @@ mod tests {
         assert_eq!(parse_instance_id("instance-id=a b\n"), None);
         assert_eq!(parse_instance_id("instance-id=..\n"), None);
         assert_eq!(parse_instance_id("instance-id=\n"), None);
-        assert_eq!(parse_instance_id("app=ai.storyteller.wordcraft\n"), None);
+        assert_eq!(parse_instance_id("app=agency.freeandy.write\n"), None);
     }
 
     #[test]
@@ -77,7 +77,7 @@ mod tests {
     fn settings_dir_is_the_apps_folder() {
         if let Some(d) = settings_dir() {
             let name = d.file_name().and_then(|n| n.to_str()).unwrap_or("");
-            assert!(name == "wordcraft" || name == "WordCraft", "{}", d.display());
+            assert!(name == "wordcraft" || name == "FreeANDIY Write", "{}", d.display());
         }
     }
 }

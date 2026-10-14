@@ -20,7 +20,22 @@ pub fn is_asset(path: &str) -> bool {
 
 /// Paths that need an ATTRIBUTION.md entry but lack one.
 pub fn missing(files: &[String], assets_md: &str) -> Vec<String> {
-    files.iter().filter(|f| is_asset(f) && !assets_md.contains(&format!("`{f}`"))).cloned().collect()
+    files.iter().filter(|f| is_asset(f) && !assets_md.contains(&format!("`{f}`")) && !in_listed_dir(f, assets_md)).cloned().collect()
+}
+
+/// FreeANDIY: the fork's generated asset directories are attributed as a whole (a row for
+/// `` `assets/app-icon/` `` covers every file in it).
+fn in_listed_dir(f: &str, assets_md: &str) -> bool {
+    [
+        "freeandiy/assets/fonts/",
+        "freeandiy/assets/brand/",
+        "freeandiy/assets/icons/",
+        "freeandiy/assets/dmg/",
+        "assets/app-icon/",
+        "packaging/macos/dmg/",
+    ]
+    .iter()
+    .any(|d| f.starts_with(d) && assets_md.contains(&format!("`{d}`")))
 }
 
 pub fn run(root: &Path) -> Result<(), String> {

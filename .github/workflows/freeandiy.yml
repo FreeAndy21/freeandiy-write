@@ -1,0 +1,86 @@
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
+# Shared by every FreeANDIY app (source: FreeAndy21/freeandiy); app settings: freeandiy/app.toml.
+# FreeANDIY checks: main is exactly upstream + freeandiy/, and no upstream branding ships.
+# (Upstream's own CI, rebranded, still runs its tests where upstream has one.)
+name: FreeANDIY
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: freeandiy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  brand:
+    name: branding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the upstream commit recorded in .freeandiy-upstream is in main's history
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: freeandiy/tools/rebrand
+      - name: Rebrand tool tests
+        run: cargo test --locked --manifest-path freeandiy/tools/rebrand/Cargo.toml || cargo test --manifest-path freeandiy/tools/rebrand/Cargo.toml
+      - name: main = upstream + freeandiy/ (no hand edits outside freeandiy/)
+        run: |
+          git config user.name ci && git config user.email ci@localhost
+          freeandiy/scripts/regenerate.sh --check
+      - name: No upstream branding in sources
+        run: freeandiy/scripts/check-branding.sh
+
+  artifacts:
+    name: branding in built binaries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux system dependencies (egui/winit/rfd)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: freeandiy-release
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+      - name: App settings
+        run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
+      - name: Build
+        run: cargo build --release --locked $FA_BINS $FA_FEATURES
+      - name: No upstream branding in the binaries
+        run: freeandiy/scripts/check-branding.sh $(printf 'target/release/%s ' $FA_EXES)
+
+  tests:
+    name: tests (Linux)
+    # Only for apps whose upstream has no test workflow of its own (app.toml: build.ci_tests).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: App settings
+        run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
+      - name: Install Linux system dependencies (egui/winit/rfd)
+        if: env.FA_CI_TESTS == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev
+      - uses: dtolnay/rust-toolchain@stable
+        if: env.FA_CI_TESTS == 'true'
+      - uses: Swatinem/rust-cache@v2
+        if: env.FA_CI_TESTS == 'true'
+        with:
+          key: freeandiy-tests
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+      - name: Test
+        if: env.FA_CI_TESTS == 'true'
+        run: env $FA_TEST_ENV cargo test --locked $FA_TESTS --lib --tests

@@ -1,0 +1,184 @@
+# Slovak (sk) catalog. Added by FreeANDIY (Free Andy Agency), 2026; MIT OR Apache-2.0 like the
+# other catalogs. Columns, separated by a TAB:  context <TAB> source <TAB> translation
+#
+#   context  empty                a plain UI string; `source` is the English text in the code
+#            (no contexts are used in this app)
+#   escapes  \n  \t  \\  inside a column. `{name}` placeholders must appear in both columns.
+#   lines starting with # and blank lines are ignored.
+#
+# Clean-room: every entry was written from the plain meaning of the English label using ordinary
+# Slovak computing vocabulary (odsek, štýl, strana, hlavička, päta, odkaz, revízia ...). No
+# proprietary localisation resource, string table or product UI was consulted or copied; in
+# particular not the Slovak localisation of any commercial word processor. Add entries the same way.
+# Conventions: ribbon tabs and groups are nouns (Domov, Vložiť, Odsek ...), commands are infinitives or nouns
+# (Otvoriť…, Uložiť ako…), sentence case as in the English source. Product and technology names
+# (FreeANDIY Write, OpenType, CMYK, Lab ...) stay in Latin letters; the trailing "…" of dialog
+# commands is kept.
+#
+# Coverage: the ribbon tabs and groups and the common strings shared with the other FreeANDIY
+# apps. Everything else falls back to English until translated.
+
+# Ribbon, menus and common labels
+	Home	Domov
+	Insert	Vložiť
+	Draw	Kresliť
+	Design	Návrh
+	Layout	Rozloženie
+	References	Odkazy
+	Mailings	Korešpondencia
+	Review	Revízia
+	Developer	Vývojár
+	Zotero	Zotero
+	Table Design	Návrh tabuľky
+	Table Layout	Rozloženie tabuľky
+	Picture Format	Formát obrázka
+	Shape Format	Formát tvaru
+	Equation	Rovnica
+	Chart Design	Návrh grafu
+	SmartArt Design	Návrh SmartArt
+	Accessibility	Prístupnosť
+	Adjust	Upraviť
+	Agents	Agenti
+	Alignment	Zarovnanie
+	Arrange	Usporiadať
+	Bibliography	Bibliografia
+	Borders	Orámovanie
+	Captions	Titulky
+	Cell Size	Veľkosť bunky
+	Changes	Zmeny
+	Chart Layouts	Rozloženia grafu
+	Citations	Citácie
+	Citations & Bibliography	Citácie a bibliografia
+	Clipboard	Schránka
+	Comments	Komentáre
+	Controls	Ovládacie prvky
+	Convert	Previesť
+	Create Graphic	Vytvoriť grafiku
+	Dark Mode	Tmavý režim
+	Data	Údaje
+	Document	Dokument
+	Document Formatting	Formátovanie dokumentu
+	Drawing Canvas	Kresliace plátno
+	Drawing Tools	Kresliace nástroje
+	Editing	Úpravy
+	Editor	Editor
+	Finish	Dokončiť
+	Footnotes	Poznámky pod čiarou
+	Header & Footer	Hlavička a päta
+	Illustrations	Ilustrácie
+	Immersive	Pohlcujúce čítanie
+	Index	Register
+	Ink	Atrament
+	Language	Jazyk
+	Layouts	Rozloženia
+	Links	Prepojenia
+	Macros	Makrá
+	Merge	Zlúčiť
+	Outline Tools	Nástroje osnovy
+	Page Background	Pozadie strany
+	Page Movement	Pohyb strany
+	Page Setup	Nastavenie strany
+	Pages	Strany
+	Paragraph	Odsek
+	Picture Styles	Štýly obrázka
+	Preview Results	Ukážka výsledkov
+	Proofing	Kontrola pravopisu
+	Protect	Ochrana
+	Replay	Prehrať
+	Research	Výskum
+	Reset	Obnoviť
+	Rows & Columns	Riadky a stĺpce
+	Shape Styles	Štýly tvarov
+	Show	Zobraziť
+	SmartArt Styles	Štýly SmartArt
+	Speech	Reč
+	Start Mail Merge	Spustiť hromadnú korešpondenciu
+	Styles	Štýly
+	Symbols	Symboly
+	Table Style Options	Možnosti štýlu tabuľky
+	Table Styles	Štýly tabuľky
+	Table of Authorities	Zoznam prameňov
+	Table of Contents	Obsah
+	Tables	Tabuľky
+	Templates	Šablóny
+	Themes	Motívy
+	Tracking	Sledovanie
+	Views	Zobrazenia
+	Commands	Príkazy
+	{app} is based on the open-source project {upstream} (© ArtCraft Team and contributors, MIT/Apache-2.0). FreeANDIY is not affiliated with the ArtCraft team.	{app} je založený na open-source projekte {upstream} (© ArtCraft Team a prispievatelia, MIT/Apache-2.0). FreeANDIY nie je spojený s tímom ArtCraft.
+	About	O aplikácii
+	Advanced	Rozšírené
+	Align	Zarovnať
+	All	Všetko
+	Bold	Tučné
+	Cancel	Zrušiť
+	Change Case	Zmeniť veľkosť písmen
+	Character	Znak
+	Clear	Vymazať
+	Close	Zavrieť
+	Color	Farba
+	Copy	Kopírovať
+	Create	Vytvoriť
+	Crop	Orezať
+	Cut	Vystrihnúť
+	Delete	Odstrániť
+	Don't Save	Neukladať
+	Effects	Efekty
+	Export	Exportovať
+	File	Súbor
+	Find Next	Nájsť ďalšie
+	Flip Horizontal	Prevrátiť vodorovne
+	Font	Písmo
+	Font Size	Veľkosť písma
+	Group	Zoskupiť
+	Help	Pomocník
+	Horizontal	Vodorovne
+	Info	Informácie
+	Italic	Kurzíva
+	Light	Svetlo
+	lowercase	malé písmená
+	New	Nový
+	New Window	Nové okno
+	No	Nie
+	Object	Objekt
+	OK	OK
+	Open	Otvoriť
+	Options	Možnosti
+	Orientation	Orientácia
+	Outline	Obrysy
+	Paste	Prilepiť
+	Paste Special	Prilepiť špeciálne
+	Presets	Predvoľby
+	Preview	Náhľad
+	Properties	Vlastnosti
+	Recent	Nedávne
+	Redo	Znova
+	Repeat	Opakovanie
+	Rotate	Otočiť
+	Save	Uložiť
+	Saved	Uložené
+	Scale	Mierka
+	Select	Výber
+	Selection	Výber
+	Shapes	Tvary
+	Size	Veľkosť
+	Tools	Nástroje
+	Undo	Späť
+	Ungroup	Zrušiť zoskupenie
+	UPPERCASE	VEĽKÉ PÍSMENÁ
+	Use system setting	Podľa systému
+	Vertical	Zvisle
+	View	Zobraziť
+	Window	Okno
+	Yes	Áno
+	Zoom In	Priblížiť
+	Zoom Out	Oddialiť
+	Customize…	Prispôsobiť…
+	Expand	Rozložiť
+	Type	Text
+	Apply	Použiť
+	New…	Nový…
+	Options…	Možnosti…
+	New Document	Nový dokument
+	Transform	Transformovať
+	Spelling	Pravopis

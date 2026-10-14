@@ -274,7 +274,7 @@ pub struct Tokens {
 
 impl Tokens {
     pub fn light() -> Self {
-        Tokens {
+        crate::freeandiy::tokens(Tokens {
             dark: false,
             title_bar: Color32::from_rgb(0xF0, 0xF0, 0xF0),
             ribbon: Color32::from_rgb(0xF9, 0xF9, 0xF9),
@@ -310,10 +310,10 @@ impl Tokens {
             red: Color32::from_rgb(0xD1, 0x3B, 0x3B),
             green: Color32::from_rgb(0x2E, 0x8B, 0x57),
             orange: Color32::from_rgb(0xE0, 0x7B, 0x1F),
-        }
+        })
     }
     pub fn dark() -> Self {
-        Tokens {
+        crate::freeandiy::tokens(Tokens {
             dark: true,
             title_bar: Color32::from_rgb(0x1F, 0x1F, 0x1F),
             ribbon: Color32::from_rgb(0x29, 0x29, 0x29),
@@ -350,7 +350,7 @@ impl Tokens {
             red: Color32::from_rgb(0xEE, 0x6A, 0x6A),
             green: Color32::from_rgb(0x5B, 0xC0, 0x8A),
             orange: Color32::from_rgb(0xF0, 0xA0, 0x50),
-        }
+        })
     }
     pub fn get(ctx: &egui::Context) -> Tokens {
         if ctx.global_style().visuals.dark_mode { Tokens::dark() } else { Tokens::light() }
@@ -436,9 +436,11 @@ pub fn font_definitions(prefer_hans: bool, system_cjk: bool) -> FontDefinitions 
     let add = |fonts: &mut FontDefinitions, name: &str, bytes: &'static [u8]| {
         fonts.font_data.insert(name.into(), Arc::new(FontData::from_static(bytes)));
     };
-    add(&mut fonts, "Inter", include_bytes!("../../../assets/fonts/Inter-Regular.ttf"));
-    add(&mut fonts, "InterMedium", include_bytes!("../../../assets/fonts/Inter-Medium.ttf"));
-    add(&mut fonts, "InterSemiBold", include_bytes!("../../../assets/fonts/Inter-SemiBold.ttf"));
+    // FreeANDIY: the UI face is IBM Plex Sans (`crate::freeandiy::fonts`), under upstream's font
+    // keys so the font stacks and their tests stay unchanged.
+    add(&mut fonts, "Inter", crate::freeandiy::fonts::sans_regular());
+    add(&mut fonts, "InterMedium", crate::freeandiy::fonts::sans_medium());
+    add(&mut fonts, "InterSemiBold", crate::freeandiy::fonts::sans_semibold());
     add(&mut fonts, "SourceSans", include_bytes!("../../../assets/fonts/SourceSans3-Regular.ttf"));
     add(&mut fonts, "Mono", include_bytes!("../../../assets/fonts/JetBrainsMono-Regular.ttf"));
     if let Some(prop) = fonts.families.get_mut(&FontFamily::Proportional) {
@@ -662,6 +664,7 @@ fn visuals(t: &Tokens) -> Visuals {
     v.widgets.open.weak_bg_fill = t.pressed;
     v.popup_shadow = egui::Shadow { offset: [0, 4], blur: 16, spread: 0, color: Color32::from_black_alpha(if t.dark { 120 } else { 40 }) };
     v.window_shadow = egui::Shadow { offset: [0, 8], blur: 28, spread: 0, color: Color32::from_black_alpha(if t.dark { 140 } else { 50 }) };
+    crate::freeandiy::visuals(&mut v);
     v
 }
 

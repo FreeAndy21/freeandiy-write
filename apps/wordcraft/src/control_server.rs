@@ -1,5 +1,5 @@
 //! Loopback JSON-lines control server: one request per line, one reply per line.
-//! This is the transport the MCP server (`wordcraft-cli mcp --connect`) wraps.
+//! This is the transport the MCP server (`freeandiy-write-cli mcp --connect`) wraps.
 //!
 //! Every request needs the window's key (`docs/control-protocol.md`, Keys): once the port is
 //! bound, the app writes a random key to `<settings>/control-key.<instance>` (mode 0600) and

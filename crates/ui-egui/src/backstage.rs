@@ -111,7 +111,7 @@ pub fn show(app: &mut WordApp, ui: &mut Ui) {
                 }
             }
             ui.with_layout(egui::Layout::bottom_up(egui::Align::Min), |ui| {
-                for (label, id) in [("About", "about"), ("Discord community", "discord")] {
+                for (label, id) in [("About", "about")] {
                     let (r, resp) = ui.allocate_exact_size(vec2(200.0, 32.0), Sense::click());
                     resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, ui.is_enabled(), tl!(label)));
                     if resp.hovered() {
@@ -119,11 +119,7 @@ pub fn show(app: &mut WordApp, ui: &mut Ui) {
                     }
                     ui.painter().text(pos2(r.min.x + 22.0, r.center().y), Align2::LEFT_CENTER, tl!(label), regular(13.0), egui::Color32::WHITE);
                     if resp.clicked() {
-                        if id == "discord" {
-                            let _ = app.run("ui.discord", json!({}));
-                        } else {
-                            app.dialog = crate::dialogs::Dialog::open("about", app);
-                        }
+                        app.dialog = crate::dialogs::Dialog::open(id, app);
                     }
                 }
             });
@@ -301,8 +297,8 @@ fn open_page(app: &mut WordApp, ui: &mut Ui) {
     // doesn't show up, WordCraft's own browser is always one click away.
     #[cfg(all(unix, not(target_os = "macos"), not(target_arch = "wasm32")))]
     if ui
-        .button(egui::RichText::new(tl!("Browse in WordCraft…")).font(medium(14.0)))
-        .on_hover_text(tl!("Open a file with WordCraft's own browser when the system file dialog doesn't appear."))
+        .button(egui::RichText::new(tl!("Browse in FreeANDIY Write…")).font(medium(14.0)))
+        .on_hover_text(tl!("Open a file with FreeANDIY Write's own browser when the system file dialog doesn't appear."))
         .clicked()
     {
         let _ = app.run("ui.fileBrowser", json!({}));

@@ -329,7 +329,7 @@ pub struct Session {
     pub path: Option<std::path::PathBuf>,
     pub dirty: bool,
     /// Where the custom dictionary is kept on disk, if the host wired one up. Only the desktop
-    /// app does: headless sessions (MCP, `wordcraft-cli run`), tests and the web build leave
+    /// app does: headless sessions (MCP, `freeandiy-write-cli run`), tests and the web build leave
     /// `None`, so an agent's words stay in memory and never change the person's dictionary.
     /// Add to Dictionary and File › Options › Proofing save through it (#40).
     pub user_dict_path: Option<std::path::PathBuf>,
@@ -583,7 +583,7 @@ impl Session {
             goal_x: None,
             page_hint: 0,
             registry: Arc::new(crate::cmd::registry()),
-            author: "WordCraft User".into(),
+            author: "FreeANDIY Write User".into(),
             initials: String::new(),
             painter: None,
             status: String::new(),

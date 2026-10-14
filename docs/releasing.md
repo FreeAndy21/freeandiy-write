@@ -15,7 +15,7 @@ this file has the WordCraft specifics.
 | Linux | x86_64 and aarch64 `.AppImage` (+ `.zsync` for AppImageUpdate), `.flatpak` bundle, `.deb`, `.rpm`, `.tar.gz`; Flathub manifest | checksums |
 | Linux riscv64 | `.tar.gz` (cross-compiled on `ubuntu-24.04`, glibc >= 2.39; CLI smoke-tested under QEMU) | checksums |
 | FreeBSD | x86_64 `.tar.gz` | checksums |
-| Web | `wordcraft-web-<version>.zip` (static site: `index.html`, wasm, glue) | none |
+| Web | `freeandiy-write-<version>-web-wasm32.zip` (static site: `index.html`, wasm, glue) | none |
 
 3. The run drafts a GitHub Release `WordCraft v<version>` with `SHA256SUMS.txt`; review and publish it.
 

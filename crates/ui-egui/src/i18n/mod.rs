@@ -9,7 +9,7 @@
 //! catalog for it, and English otherwise. File ▸ Options ▸ Interface language picks one by hand.
 //!
 //! This is the system PdfCraft and PhotoCraft use (`pdfcraft/crates/ui-egui/src/i18n`), so the
-//! catalog format and habits carry over between the Crafting Apps.
+//! catalog format and habits carry over between the FreeANDIY apps.
 //!
 //! # Adding a language
 //! 1. Add `xx.tsv` next to `zh-hans.tsv` (copy its header; translate from the *meaning* of the
@@ -52,7 +52,7 @@ pub struct LangInfo {
 }
 
 /// The registry. English first: it is the fallback and the source language.
-pub static LANGUAGES: [LangInfo; 19] = [
+pub static LANGUAGES: [LangInfo; 20] = [
     LangInfo { code: "en", name: "English", source: "", prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
     // Simplified Chinese; `zh`, `zh-CN`, `zh-SG` and `zh-Hans-*` resolve here (see `candidates`).
     LangInfo {
@@ -112,6 +112,9 @@ pub static LANGUAGES: [LangInfo; 19] = [
         catalog: OnceLock::new(),
     },
     LangInfo { code: "cs", name: "Čeština", source: include_str!("cs.tsv"), prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
+    // Slovak (added by FreeANDIY): the ribbon tabs, menus and common labels so far; the rest shows
+    // English.
+    LangInfo { code: "sk", name: "Slovenčina", source: include_str!("sk.tsv"), prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
     LangInfo { code: "et", name: "Eesti", source: include_str!("et.tsv"), prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
     // German, neutral across Germany, Austria and Switzerland; `de`, `de-DE`, `de-AT`, `de-CH` …
     // resolve here.

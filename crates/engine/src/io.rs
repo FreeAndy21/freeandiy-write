@@ -201,15 +201,15 @@ fn open_by_content(name: &str, ext: &str, bytes: &[u8], password: Option<&str>) 
     let (mut doc, encrypted) = if bytes.starts_with(OLE) && wordcraft_docx::is_encrypted(bytes) {
         (wordcraft_docx::read_with_password(bytes, password).map_err(|e| e.to_string())?, true)
     } else if bytes.starts_with(ZIP) {
-        (wordcraft_docx::read(bytes).map_err(|e| format!("{name}: not a document WordCraft can open ({e})"))?, false)
+        (wordcraft_docx::read(bytes).map_err(|e| format!("{name}: not a document FreeANDIY Write can open ({e})"))?, false)
     } else if bytes.starts_with(OLE) {
-        (wordcraft_docbin::read(bytes).map_err(|e| format!("{name}: not a document WordCraft can open ({e})"))?, false)
+        (wordcraft_docbin::read(bytes).map_err(|e| format!("{name}: not a document FreeANDIY Write can open ({e})"))?, false)
     } else if bytes.starts_with(b"{\\rtf") {
         (wordcraft_formats::rtf::import(bytes)?, false)
     } else if wordcraft_formats::txt::is_text(bytes) {
         (wordcraft_formats::txt::import(bytes), false)
     } else if ext.is_empty() {
-        return Err(format!("{name}: not a document or text file WordCraft can open"));
+        return Err(format!("{name}: not a document or text file FreeANDIY Write can open"));
     } else {
         return Err(format!("{name}: unsupported format `.{ext}` (not a document or text file)"));
     };
