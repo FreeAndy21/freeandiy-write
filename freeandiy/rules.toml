@@ -109,6 +109,20 @@ replace = "ArtCraft Team and the @@UPSTREAM@@ contributors"
 min = 2
 
 [[replace]]
+name = "protect: upstream's copyright line in the catalogs (1st ArtCraft on the line)"
+include = ["crates/ui-egui/src/i18n/*.tsv"]
+regex = '(?m)^([^\n]*Copyright[^\n]*?)ArtCraft'
+replace = '${1}@@AC@@'
+min = 10
+
+[[replace]]
+name = "protect: upstream's copyright line in the catalogs (2nd ArtCraft on the line)"
+include = ["crates/ui-egui/src/i18n/*.tsv"]
+regex = '(?m)^([^\n]*Copyright[^\n]*?)ArtCraft'
+replace = '${1}@@AC@@'
+min = 10
+
+[[replace]]
 name = "catalogs: other ArtCraft mentions"
 include = ["crates/ui-egui/src/i18n/*.tsv"]
 regex = 'ArtCraft(?: |-)?(?:team|Team|tým|tímu|týmu|Teams|teams)?'
@@ -220,6 +234,13 @@ min = 1
 # The product name in the UI, messages, translations, packaging and the web page.
 
 [[replace]]
+name = "Info.plist custom keys: WordCraftVersion, WordCraftBuildCommit"
+include = ["packaging/**"]
+regex = 'WordCraft(Version|BuildCommit)'
+replace = 'FreeANDIYWrite${1}'
+min = 2
+
+[[replace]]
 name = "product name after an escaped newline in strings (\\nWordCraft)"
 include = ["**/*.rs"]
 exclude = ["xtask/**"]
@@ -327,6 +348,13 @@ include = ["**"]
 find = "@@UPSTREAM@@"
 replace = "{{this.upstream_name}}"
 min = 2
+
+[[replace]]
+name = "restore @@AC@@ (upstream's copyright holder)"
+include = ["**"]
+find = "@@AC@@"
+replace = "ArtCraft"
+min = 20
 
 [[replace]]
 name = "restore @@PKG@@"
