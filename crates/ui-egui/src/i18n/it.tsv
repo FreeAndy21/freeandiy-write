@@ -17,7 +17,6 @@
 	(no style)	(nessuno stile)
 	(no suggestions)	(nessun suggerimento)
 	1.5 Line Spacing	Interlinea 1,5
-	A free, open-source word processor written from scratch in Rust.\nPart of FreeANDIY by Free Andy Agency.	Un elaboratore di testi gratuito e open source, scritto da zero in Rust.\nFa parte delle Crafting Apps del team FreeANDIY.
 	About	Informazioni
 	About FreeANDIY Write	Informazioni su FreeANDIY Write
 	Accept	Accetta
@@ -473,7 +472,7 @@
 	Link to Previous	Collega al precedente
 	Links	Collegamenti
 	Location: {path}	Percorso: {path}
-	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team and the WordCraft contributors.	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team e i collaboratori di FreeANDIY Write.
+	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team and the WordCraft contributors.	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team e i collaboratori di WordCraft.
 	Macros	Macro
 	Mailings	Mail
 	Manage Sources	Gestione fonti

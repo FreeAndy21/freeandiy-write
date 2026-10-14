@@ -16,7 +16,6 @@
 	(no style)	(sin estilo)
 	(no suggestions)	(sin sugerencias)
 	1.5 Line Spacing	Interlineado 1,5
-	A free, open-source word processor written from scratch in Rust.\nPart of FreeANDIY by Free Andy Agency.	Un procesador de textos gratuito y de código abierto, escrito desde cero en Rust.\nForma parte de las Crafting Apps del equipo de FreeANDIY.
 	About	Acerca de
 	About FreeANDIY Write	Acerca de FreeANDIY Write
 	Accept	Aceptar
@@ -542,7 +541,7 @@
 	Link to Previous	Vincular con el anterior
 	Links	Vínculos
 	Location: {path}	Ubicación: {path}
-	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team and the WordCraft contributors.	MIT o Apache-2.0. Copyright (c) 2026 ArtCraft Team y los colaboradores de FreeANDIY Write.
+	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team and the WordCraft contributors.	MIT o Apache-2.0. Copyright (c) 2026 ArtCraft Team y los colaboradores de WordCraft.
 	Macros	Macros
 	Mailings	Correspondencia
 	Make FreeANDIY Write the default for Word documents…	Hacer de FreeANDIY Write la aplicación predeterminada para documentos de Word…

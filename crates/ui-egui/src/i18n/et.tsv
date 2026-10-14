@@ -11,7 +11,6 @@
 
 	(no suggestions)	(soovitused puuduvad)
 	1.5 Line Spacing	Reavahe 1,5
-	A free, open-source word processor written from scratch in Rust.\nPart of FreeANDIY by Free Andy Agency.	Tasuta avatud lähtekoodiga tekstitöötlusprogramm, mis on kirjutatud Rustis.\nFreeANDIYi meeskonna Crafting Appsi osa.
 	About	Teave
 	About FreeANDIY Write	FreeANDIY Write teave
 	Accept	Nõustu
@@ -420,7 +419,7 @@
 	Links	Lingid
 	Location: {path}	Asukoht: {path}
 	Mirror indents	Peegelda taanded
-	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team and the WordCraft contributors.	MIT OR Apache-2.0. Autoriõigus (c) 2026 ArtCrafti meeskond ja FreeANDIY Write kaasautorid.
+	MIT OR Apache-2.0. Copyright (c) 2026 ArtCraft Team and the WordCraft contributors.	MIT OR Apache-2.0. Autoriõigus (c) 2026 ArtCrafti meeskond ja WordCrafti kaasautorid.
 	Macros	Makrod
 	Mailings	Postitused
 	Manage Sources	Halda allikaid
