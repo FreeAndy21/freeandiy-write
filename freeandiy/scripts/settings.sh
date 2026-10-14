@@ -12,6 +12,8 @@ echo "FA_TEST_ENV=$(fa_get build.test_env "")"
 echo "FA_WEB_ENV=$(fa_get build.web_env "")"
 echo "FA_CI_TESTS=$(fa_get build.ci_tests false)"
 echo "FA_TESTS=$(fa_get build.tests "")"
+# Extra cargo test arguments (e.g. `-- --skip <test>`).
+echo "FA_TEST_ARGS=$(fa_get build.test_args "")"
 # Extra Debian packages the build needs (space-separated).
 echo "FA_APT=$(fa_get build.apt "")"
 # Built executables (names after the rename patch), checked for upstream branding.

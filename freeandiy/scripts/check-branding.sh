@@ -30,6 +30,9 @@ BANNED='ArtCraft|artcraft|storyteller|getartcraft|discord\.gg|Crafting Apps'
 # credit for its own work, and app-specific fixtures (check.allow).
 ALLOWED_STRINGS="based on the open-source project|affiliated with the ArtCraft team|ArtCraft Team and contributors|ArtCraft Team a prispievatelia|nie je spojený s tímom ArtCraft|<!--.*-->|ArtCraft Team and the $UP (contributors|authors)|the $UP authors|by (the )?$UP contributors|(\(c\)|©|Copyright).*ArtCraft|$UP.s own|^$UP\$"
 [ -n "$EXTRA_ALLOW" ] && ALLOWED_STRINGS="$ALLOWED_STRINGS|$EXTRA_ALLOW"
+# In built files only: code that ships as text (shader and source comments) and identifiers that
+# merely contain the upstream name (`PdfCraftApp`, `filmcraft_render`).
+CODE_STRINGS="//[^/]*($UP|ArtCraft)|[A-Za-z0-9_]$UP|$UP[A-Za-z0-9_]"
 # Where upstream's names may appear: licences and notices (must stay), upstream's developer
 # docs (not shipped), credits, code comments about upstream work, and our own freeandiy/ sources.
 # xtask/ is upstream's developer tooling (never shipped).
@@ -75,7 +78,13 @@ for target in "$@"; do
   fi
   bad=0
   for f in "${files[@]}"; do
-    hits="$($STRINGS "$f" 2>/dev/null | grep -E "$BANNED|$UP" | grep -v -E "$ALLOWED_STRINGS" | sort -u | head -20 || true)"
+    # Symbol tables name upstream's crates and types (`pdfcraft_ui_egui::PdfCraftApp`), which no
+    # user reads: scan a stripped copy when `strip` can make one.
+    scan="$f"
+    stripped="$(mktemp)"
+    if cp "$f" "$stripped" 2>/dev/null && strip "$stripped" >/dev/null 2>&1; then scan="$stripped"; fi
+    hits="$($STRINGS "$scan" 2>/dev/null | grep -E "$BANNED|$UP" | grep -v -E "$ALLOWED_STRINGS" | grep -v -E "$CODE_STRINGS" | sort -u | head -20 || true)"
+    rm -f "$stripped"
     if [ -n "$hits" ]; then
       echo "  $f:"
       echo "$hits" | sed 's/^/    /' | cut -c1-200
