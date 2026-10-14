@@ -145,6 +145,13 @@ replace = "{{brand.name}}"
 min = 0
 
 [[replace]]
+name = "spelling dictionary: the brand's word"
+include = ["assets/spelling/en-extra.txt"]
+regex = '(?m)^artcraft$'
+replace = "freeandiy"
+min = 1
+
+[[replace]]
 name = "upstream issues URL"
 include = ["packaging/**", ".github/**"]
 find = "https://github.com/storytold/wordcraft/issues"
