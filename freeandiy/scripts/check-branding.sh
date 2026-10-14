@@ -50,7 +50,7 @@ web=()
 hits="$(
   {
     git grep -n -I "$UP" -- '**/i18n/*.tsv' | grep -v -E '^[^:]+:[0-9]+:#' || true
-    git grep -n -I "$UP" -- packaging "${web[@]}" ':!*.md' | grep -v -E "the $UP authors" || true
+    git grep -n -I "$UP" -- packaging ${web[@]+"${web[@]}"} ':!*.md' | grep -v -E "the $UP authors" || true
     git grep -n -I -E "\"[^\"]*$UP[^\"]*\"" -- '*.rs' "${RS_EXCLUDE[@]}" ':!freeandiy/**' ":!$TEMPLATE_OUT" \
       | grep -v -E '^[^:]+:[0-9]+:\s*//' | grep -v -E "the $UP authors" || true
   } | { grep -v -E "$ALLOWED_STRINGS" || true; } | sort -u
