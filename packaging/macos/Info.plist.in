@@ -24,9 +24,9 @@
   <string>@SHORT_VERSION@</string>
   <key>CFBundleVersion</key>
   <string>@SHORT_VERSION@</string>
-  <key>WordCraftVersion</key>
+  <key>FreeANDIYWriteVersion</key>
   <string>@VERSION@</string>
-  <key>WordCraftBuildCommit</key>
+  <key>FreeANDIYWriteBuildCommit</key>
   <string>@BUILD_SHA@</string>
   <key>CFBundleIconFile</key>
   <string>FreeANDIY Write</string>
