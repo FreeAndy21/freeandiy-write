@@ -85,4 +85,4 @@ jobs:
           save-if: ${{ github.ref == 'refs/heads/main' }}
       - name: Test
         if: env.FA_CI_TESTS == 'true'
-        run: env $FA_TEST_ENV cargo test --locked $FA_TESTS --lib --tests
+        run: env $FA_TEST_ENV cargo test --locked $FA_TESTS --lib --tests $FA_TEST_ARGS
