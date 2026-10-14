@@ -489,3 +489,15 @@ replace = '''foreach ($$f in 'README.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APA
 Copy-Item (Join-Path $$Root 'freeandiy\assets\fonts\OFL-*.txt') $$Portable
 Copy-Item (Join-Path $$Root 'freeandiy\assets\brand\LICENSE-brand.txt') (Join-Path $$Portable 'LICENSE-FreeANDIY-brand.txt')'''
 min = 0
+
+# ---------------------------------------------------------------------------------------------
+# Shared by every FreeANDIY app (FreeAndy21/freeandiy, common/rules-vendor.toml): FreeANDIY builds
+# are published by Free Andy Agency, not by upstream's company. The MSI manufacturer, the Windows
+# executables' CompanyName, the Linux package vendor and the AppStream developer name say so.
+
+[[replace]]
+name = "vendor: Free Andy Agency publishes FreeANDIY builds (MSI, exe resources, Linux metadata)"
+include = ["packaging/**", "apps/*/build.rs"]
+find = "Learning Machines LLC"
+replace = "{{brand.owner}}"
+min = 1
