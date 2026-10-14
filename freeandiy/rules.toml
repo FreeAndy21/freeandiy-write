@@ -27,11 +27,12 @@ delete = [
   "packaging/macos/dmg",                         # background and layout derived from upstream's icon; ours is copied in
 ]
 
-# Translation catalogs: drop the Discord entries (the strings are gone from the UI); other
-# ArtCraft mentions become FreeANDIY below, so complete catalogs stay complete.
+# Translation catalogs: drop the Discord entries (the strings are gone from the UI) and the
+# About tagline (its new English text has no translations yet); other ArtCraft mentions become
+# FreeANDIY below, so complete catalogs stay complete.
 [[drop_lines]]
 include = ["crates/ui-egui/src/i18n/*.tsv"]
-regex = '^[^#\n]*Discord'
+regex = '^[^#\n]*(Discord|Crafting Apps)'
 min = 20
 
 # ---------------------------------------------------------------------------------------------
@@ -121,6 +122,20 @@ include = ["crates/ui-egui/src/i18n/*.tsv"]
 regex = '(?m)^([^\n]*Copyright[^\n]*?)ArtCraft'
 replace = '${1}@@AC@@'
 min = 10
+
+[[replace]]
+name = "protect: upstream's copyright line in the catalogs (WordCraft, 1st)"
+include = ["crates/ui-egui/src/i18n/*.tsv"]
+regex = '(?m)^([^\n]*Copyright[^\n]*?)WordCraft'
+replace = '${1}@@UPSTREAM@@'
+min = 10
+
+[[replace]]
+name = "protect: upstream's copyright line in the catalogs (WordCraft, 2nd)"
+include = ["crates/ui-egui/src/i18n/*.tsv"]
+regex = '(?m)^([^\n]*Copyright[^\n]*?)WordCraft'
+replace = '${1}@@UPSTREAM@@'
+min = 0
 
 [[replace]]
 name = "catalogs: other ArtCraft mentions"
@@ -347,7 +362,7 @@ name = "restore @@UPSTREAM@@"
 include = ["**"]
 find = "@@UPSTREAM@@"
 replace = "{{this.upstream_name}}"
-min = 2
+min = 20
 
 [[replace]]
 name = "restore @@AC@@ (upstream's copyright holder)"
