@@ -471,3 +471,21 @@ to = "assets/app-icon/hicolor/256x256/apps/{{this.app_id}}.png"
 [[copy]]
 from = "freeandiy/assets/icons/{{this.key}}/hicolor/512.png"
 to = "assets/app-icon/hicolor/512x512/apps/{{this.app_id}}.png"
+
+# ---------------------------------------------------------------------------------------------
+# Shared by every FreeANDIY app (FreeAndy21/freeandiy, common/rules-windows-notices.toml):
+# the Windows portable ZIP carries NOTICE, the attribution, the font licences and the brand terms
+# like the other packages (Apache-2.0 4(d)).
+
+[[replace]]
+name = "Windows portable ZIP: notices, attribution, font licences, brand terms"
+include = ["packaging/windows/package.ps1"]
+regex = '''(?m)^foreach \(\$f in 'README\.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE'(?:, 'NOTICE')?\) \{\n  \$p = Join-Path \$Root \$f\n  if \(Test-Path \$p\) \{ Copy-Item \$p \$Portable \}\n\}'''
+replace = '''foreach ($$f in 'README.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'ASSETS.md', 'CHANGELOG-FREEANDIY.md') {
+  $$p = Join-Path $$Root $$f
+  if (Test-Path $$p) { Copy-Item $$p $$Portable }
+}
+# FreeANDIY: the bundled UI fonts' licences and the brand terms (Apache-2.0 4(d): NOTICE above).
+Copy-Item (Join-Path $$Root 'freeandiy\assets\fonts\OFL-*.txt') $$Portable
+Copy-Item (Join-Path $$Root 'freeandiy\assets\brand\LICENSE-brand.txt') (Join-Path $$Portable 'LICENSE-FreeANDIY-brand.txt')'''
+min = 0
