@@ -18,13 +18,13 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package
       Name="FreeANDIY Write"
-      Manufacturer="Learning Machines LLC"
+      Manufacturer="Free Andy Agency"
       Version="$(var.Version)"
       UpgradeCode="729507BA-B8B0-4221-848D-DEE6536FFFAD"
       Scope="perMachine"
       Compressed="yes"
       Language="1033">
-    <SummaryInformation Description="FreeANDIY Write word processor" Manufacturer="Learning Machines LLC" />
+    <SummaryInformation Description="FreeANDIY Write word processor" Manufacturer="Free Andy Agency" />
     <!-- Same-version upgrades let successive pre-releases of one X.Y.Z replace each other
          (MSI versions are numeric, so 1.2.3-rc.1 and 1.2.3-rc.2 are both 1.2.3). -->
     <MajorUpgrade AllowSameVersionUpgrades="yes"

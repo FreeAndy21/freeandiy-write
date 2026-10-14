@@ -16,7 +16,7 @@ fn main() {
     res.set_icon("../../assets/app-icon/freeandiy-write.ico")
         .set("ProductName", "FreeANDIY Write")
         .set("FileDescription", "FreeANDIY Write word processor")
-        .set("CompanyName", "Learning Machines LLC")
+        .set("CompanyName", "Free Andy Agency")
         .set("LegalCopyright", "Copyright (c) Free Andy Agency and the WordCraft authors. MIT OR Apache-2.0.")
         .set("OriginalFilename", "freeandiy-write.exe")
         .set("InternalName", "freeandiy-write");
