@@ -1,0 +1,37 @@
+diff --git a/crates/ui-egui/src/i18n/mod.rs b/crates/ui-egui/src/i18n/mod.rs
+index 328a5c6..cbd66ae 100644
+--- a/crates/ui-egui/src/i18n/mod.rs
++++ b/crates/ui-egui/src/i18n/mod.rs
+@@ -52,7 +52,7 @@ pub struct LangInfo {
+ }
+ 
+ /// The registry. English first: it is the fallback and the source language.
+-pub static LANGUAGES: [LangInfo; 19] = [
++pub static LANGUAGES: [LangInfo; 20] = [
+     LangInfo { code: "en", name: "English", source: "", prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
+     // Simplified Chinese; `zh`, `zh-CN`, `zh-SG` and `zh-Hans-*` resolve here (see `candidates`).
+     LangInfo {
+@@ -112,6 +112,9 @@ pub static LANGUAGES: [LangInfo; 19] = [
+         catalog: OnceLock::new(),
+     },
+     LangInfo { code: "cs", name: "Čeština", source: include_str!("cs.tsv"), prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
++    // Slovak (added by FreeANDIY): the ribbon tabs, menus and common labels so far; the rest shows
++    // English.
++    LangInfo { code: "sk", name: "Slovenčina", source: include_str!("sk.tsv"), prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
+     LangInfo { code: "et", name: "Eesti", source: include_str!("et.tsv"), prefer_hans: false, editing_lang: None, catalog: OnceLock::new() },
+     // German, neutral across Germany, Austria and Switzerland; `de`, `de-DE`, `de-AT`, `de-CH` …
+     // resolve here.
+diff --git a/crates/ui-egui/src/i18n/tests.rs b/crates/ui-egui/src/i18n/tests.rs
+index b35210c..71a53e8 100644
+--- a/crates/ui-egui/src/i18n/tests.rs
++++ b/crates/ui-egui/src/i18n/tests.rs
+@@ -136,7 +136,8 @@ fn every_tab_and_command_is_translated() {
+     // Labels that read the same in every language.
+     let universal = |s: &str| !s.chars().any(char::is_alphabetic);
+     let mut missing = Vec::new();
+-    for l in Lang::all().filter(|l| *l != Lang::EN) {
++    // FreeANDIY's Slovak catalog is partial for now (the rest shows English).
++    for l in Lang::all().filter(|l| *l != Lang::EN && l.code() != "sk") {
+         let tabs = crate::ribbon::TABS.iter().chain(&["Table Design", "Table Layout"]).copied();
+         let commands = session.registry.all().iter().flat_map(|spec| std::iter::once(spec.label).chain(spec.location.split(" › ")));
+         for s in tabs.chain(commands).filter(|s| !s.is_empty() && !universal(s)) {

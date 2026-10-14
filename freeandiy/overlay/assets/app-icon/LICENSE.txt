@@ -1,0 +1,18 @@
+FreeANDIY and Free Andy Agency brand assets: license
+
+Copyright (c) 2021-2026 Free Andy Agency. All rights reserved.
+
+The FreeANDIY and Free Andy Agency names, the "Andy" angel drawings, the "Free Andy" lettering,
+the logotypes and the seal (every file in this directory, and the app icons derived from them in
+freeandiy/assets/icons/ and assets/app-icon/) are protected by copyright and are the property of
+Free Andy Agency. The names and marks are also trademarks of Free Andy Agency. They are NOT open
+source and are not covered by the MIT OR Apache-2.0 license of the code in this repository.
+
+The "Free Andy" lettering is set in FF Pepe, a licensed typeface; it is supplied only as images
+and the font itself is not, and may not be, distributed with this project.
+
+You may keep these files unchanged in copies of this repository and in unmodified official
+FreeANDIY builds. If you distribute a modified version, remove or replace them and do not call
+it FreeANDIY.
+
+All other rights reserved. Permission requests: licencie@freeandy.agency (https://freeandy.agency)

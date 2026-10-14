@@ -1,0 +1,18 @@
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
+[package]
+name = "freeandiy-rebrand"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Applies the FreeANDIY branding (freeandiy/) to a pristine upstream tree"
+publish = false
+
+# Standalone: not a member of the upstream workspace.
+[workspace]
+
+[dependencies]
+anyhow = "1"
+globset = "0.4"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"

@@ -1,0 +1,423 @@
+# FreeANDIY rebrand rules for this repository (applied by freeandiy/tools/rebrand, after the
+# patches in freeandiy/patches/). Modified-by: FreeANDIY (Free Andy Agency), 2026.
+#
+# Double-brace placeholders (e.g. this.name) come from branding.toml and app.toml (`rebrand vars`
+# lists them). Every rule has a minimum match count: when upstream renames or moves something, the
+# rule fails loudly instead of silently leaving the old brand in place.
+#
+# Protected text: rules first swap text that must keep the upstream name (cargo package names,
+# the .wordcraft document format, file names we keep) for @@...@@ markers, and the last rules
+# swap them back.
+
+# Copied files whose placeholders are filled in at the end.
+templates = [
+  "crates/ui-egui/src/freeandiy.rs",
+  "crates/ui-egui/src/i18n/sk.tsv",
+]
+
+delete = [
+  "docs/brand",                                  # ArtCraft marks: forks must remove them
+  "assets/app-icon",                             # upstream's identity; ours is copied in below
+  ".github/workflows/release.yml",               # upstream's release and platform jobs; ours: freeandiy*.yml
+  ".github/workflows/windows-arm64.yml",
+  ".github/workflows/packaging-lint.yml",
+  ".github/workflows/freebsd.yml",
+  ".github/workflows/printing.yml",
+  "packaging/icons.sh",                          # icons come from the FreeANDIY meta repository
+  "packaging/macos/dmg",                         # background and layout derived from upstream's icon; ours is copied in
+]
+
+# Translation catalogs: drop the Discord entries (the strings are gone from the UI); other
+# ArtCraft mentions become FreeANDIY below, so complete catalogs stay complete.
+[[drop_lines]]
+include = ["crates/ui-egui/src/i18n/*.tsv"]
+regex = '^[^#\n]*Discord'
+min = 20
+
+# ---------------------------------------------------------------------------------------------
+# Identifiers, maintainers, URLs.
+
+[[replace]]
+name = "app id"
+include = ["**"]
+exclude = ["**/*.md", "docs/**", "NOTICE", "ATTRIBUTION.md"]
+find = "ai.storyteller.wordcraft"
+replace = "{{this.app_id}}"
+min = 15
+
+[[replace]]
+name = "developer id"
+include = ["packaging/**"]
+find = "ai.storyteller"
+replace = "{{brand.id_prefix}}"
+min = 0
+
+[[replace]]
+name = "package maintainer"
+include = ["packaging/**"]
+find = "WordCraft maintainers <wordcraft@storyteller.ai>"
+replace = "{{brand.maintainer}}"
+min = 1
+
+[[replace]]
+name = "links in code: this app's page (About, MCP, LaTeX export comment)"
+include = ["**/*.rs"]
+find = "https://getartcraft.com/apps/wordcraft"
+replace = "{{this.page}}"
+min = 3
+
+[[replace]]
+name = "links in code: website (sample document)"
+include = ["**/*.rs"]
+find = "https://getartcraft.com/"
+replace = "{{brand.website}}/"
+min = 1
+
+[[replace]]
+name = "links in code: repository"
+include = ["**/*.rs"]
+find = "https://github.com/storytold/wordcraft"
+replace = "{{this.github}}"
+min = 2
+
+[[replace]]
+name = "About: link labels (code and catalogs)"
+include = ["**/*.rs", "crates/ui-egui/src/i18n/*.tsv"]
+find = "getartcraft.com/apps/wordcraft"
+replace = "freeandiy.freeandy.agency/{{this.key}}"
+min = 2
+
+[[replace]]
+name = "About: source link label (code and catalogs)"
+include = ["**/*.rs", "crates/ui-egui/src/i18n/*.tsv"]
+find = "github.com/storytold/wordcraft"
+replace = "github.com/{{brand.github_owner}}/{{this.repo}}"
+min = 2
+
+[[replace]]
+name = "About: tagline (code and catalogs' English key)"
+include = ["**/*.rs", "crates/ui-egui/src/i18n/*.tsv"]
+find = "Part of the Crafting Apps from the ArtCraft team."
+replace = "Part of {{brand.name}} by {{brand.owner}}."
+min = 2
+
+[[replace]]
+name = "About: keep upstream's copyright line (code and catalogs)"
+include = ["**/*.rs", "crates/ui-egui/src/i18n/*.tsv"]
+find = "ArtCraft Team and the WordCraft contributors"
+replace = "ArtCraft Team and the @@UPSTREAM@@ contributors"
+min = 2
+
+[[replace]]
+name = "catalogs: other ArtCraft mentions"
+include = ["crates/ui-egui/src/i18n/*.tsv"]
+regex = 'ArtCraft(?: |-)?(?:team|Team|tým|tímu|týmu|Teams|teams)?'
+replace = "{{brand.name}}"
+min = 0
+
+[[replace]]
+name = "upstream issues URL"
+include = ["packaging/**", ".github/**"]
+find = "https://github.com/storytold/wordcraft/issues"
+replace = "{{this.issues}}"
+min = 0
+
+[[replace]]
+name = "upstream repository URL"
+include = ["packaging/**", ".github/**"]
+regex = 'https://github\.com/storytold/wordcraft(/|"|<|\x27|$)'
+replace = "{{this.github}}${1}"
+min = 1
+
+[[replace]]
+name = "upstream repo slug (raw URLs, GITHUB_REPOSITORY defaults)"
+include = ["packaging/**", ".github/**"]
+regex = 'storytold/wordcraft\b'
+replace = "{{brand.github_owner}}/{{this.repo}}"
+min = 1
+
+[[replace]]
+name = "upstream product page"
+include = ["packaging/**", ".github/**", "apps/wordcraft-web/index.html"]
+find = "https://getartcraft.com/apps/wordcraft"
+replace = "{{this.page}}"
+min = 1
+
+[[replace]]
+name = "upstream Discord (packaging contact/help links)"
+include = ["packaging/**"]
+find = "https://discord.gg/artcraft"
+replace = "{{this.issues}}"
+min = 0
+
+[[replace]]
+name = "Crafting Apps"
+include = ["crates/**/*.rs", "apps/**/*.rs", "packaging/**"]
+find = "Crafting Apps"
+replace = "{{brand.name}} apps"
+min = 0
+
+# ---------------------------------------------------------------------------------------------
+# Protect text that keeps the upstream name.
+
+[[replace]]
+name = "protect: attribution 'the WordCraft authors'"
+include = ["apps/*/build.rs", "packaging/**"]
+find = "the WordCraft authors"
+replace = "{{brand.owner}} and the @@UPSTREAM@@ authors"
+min = 0
+
+[[replace]]
+name = "web release zip: freeandiy-write-<version>-web-wasm32.zip (before the crate-name protect)"
+include = ["packaging/web/package.sh", "packaging/web/README.md", "docs/releasing.md"]
+regex = 'wordcraft-web-(<version>|<v>|\$VERSION)'
+replace = "{{this.repo}}-${1}-web-wasm32"
+min = 1
+
+[[replace]]
+name = "protect: cargo -p / --package wordcraft"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = '(-p|--package) wordcraft'
+replace = '$1 @@PKG@@'
+min = 2
+
+[[replace]]
+name = "protect: crate names wordcraft-<crate>"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = 'wordcraft-(control-key|doc|docbin|docx|engine|fonts|formats|geom|layout|mcp|metafile|pdf|proof|render|ui-egui|zotero|web)\b'
+replace = '@@PKG@@-$1'
+min = 0
+
+[[replace]]
+name = "protect: cargo features wordcraft/<feature>"
+include = ["packaging/**", ".github/**"]
+find = "'wordcraft/"
+replace = "'@@PKG@@/"
+min = 0
+
+[[replace]]
+name = "protect: source paths apps/wordcraft"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = '(apps[/\\])wordcraft'
+replace = '${1}@@PKG@@'
+min = 0
+
+[[replace]]
+name = "protect: crate idents wordcraft_"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+find = "wordcraft_"
+replace = "@@PKG@@_"
+min = 0
+
+[[replace]]
+name = "protect: WiX sources wordcraft.wxs"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = 'wordcraft(\.wxs|\.en-us\.wxl)'
+replace = '@@PKG@@${1}'
+min = 1
+
+# ---------------------------------------------------------------------------------------------
+# The product name in the UI, messages, translations, packaging and the web page.
+
+[[replace]]
+name = "product name after an escaped newline in strings (\\nWordCraft)"
+include = ["**/*.rs"]
+exclude = ["xtask/**"]
+find = '\nWordCraft'
+replace = '\n{{this.name}}'
+skip_comments = ["//"]
+min = 0
+
+[[replace]]
+name = "product name WordCraft (Rust code, not comments; whole word)"
+include = ["**/*.rs"]
+exclude = ["xtask/**"]
+regex = '\bWordCraft\b'
+replace = "{{this.name}}"
+skip_comments = ["//"]
+min = 100
+
+[[replace]]
+name = "product name WordCraft (catalogs: any script or inflection may follow it)"
+include = ["crates/ui-egui/src/i18n/*.tsv"]
+regex = 'WordCraft[a-z]*'
+replace = "{{this.name}}"
+min = 300
+
+[[replace]]
+name = "product name WordCraft (packaging, web page, CI)"
+include = ["packaging/**", "apps/wordcraft-web/index.html", ".github/**", "Dockerfile"]
+exclude = ["**/*.md"]
+regex = '\bWordCraft\b'
+replace = "{{this.name}}"
+min = 30
+
+# ---------------------------------------------------------------------------------------------
+# Executables, packaging file names.
+
+[[replace]]
+name = "test binaries CARGO_BIN_EXE_wordcraft"
+include = ["apps/**/*.rs"]
+find = "CARGO_BIN_EXE_wordcraft"
+replace = "CARGO_BIN_EXE_{{this.repo}}"
+min = 0
+
+[[replace]]
+name = "cli executable name in code"
+include = ["apps/**/*.rs", "crates/**/*.rs"]
+regex = '\bwordcraft-cli\b'
+replace = "{{this.repo}}-cli"
+min = 3
+
+[[replace]]
+name = "icon file paths in code (assets/app-icon/wordcraft*)"
+include = ["apps/**/*.rs", "crates/**/*.rs", "apps/*/build.rs", "xtask/**"]
+find = "app-icon/wordcraft"
+replace = "app-icon/{{this.repo}}"
+min = 4
+
+[[replace]]
+name = "macOS window icon: our 1024 px tile"
+include = ["apps/wordcraft/src/main.rs"]
+find = "app-icon/{{this.repo}}-macos-512.png"
+replace = "app-icon/{{this.repo}}-1024.png"
+min = 1
+
+[[replace]]
+name = "windows exe resources"
+include = ["apps/*/build.rs"]
+regex = '"wordcraft(\.exe)?"'
+replace = '"{{this.repo}}${1}"'
+min = 1
+
+[[replace]]
+name = "packaging/CI: executables, file names, paths"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = 'wordcraft'
+replace = "{{this.repo}}"
+min = 60
+
+[[replace]]
+name = "MSI UpgradeCode (new GUID)"
+include = ["packaging/windows/*.wxs"]
+regex = 'UpgradeCode="[0-9A-Fa-f-]{36}"'
+replace = 'UpgradeCode="{{this.msi_upgrade_code}}"'
+min = 1
+
+[[replace]]
+name = "MSI app component GUID (new GUID)"
+include = ["packaging/windows/*.wxs"]
+find = "855DCEC6-9285-444F-9382-9654B83B34F6"
+replace = "{{this.msi_component_guid}}"
+min = 1
+
+[[replace]]
+name = "MSI second component GUID (new GUID)"
+include = ["packaging/windows/*.wxs"]
+find = "EFF89E6A-F9B8-49F9-B3AE-E243347484B4"
+replace = "{{msi.second_guid}}"
+min = 1
+
+# ---------------------------------------------------------------------------------------------
+# Restore protected text.
+
+[[replace]]
+name = "restore @@UPSTREAM@@"
+include = ["**"]
+find = "@@UPSTREAM@@"
+replace = "{{this.upstream_name}}"
+min = 2
+
+[[replace]]
+name = "restore @@PKG@@"
+include = ["**"]
+find = "@@PKG@@"
+replace = "wordcraft"
+min = 4
+
+# ---------------------------------------------------------------------------------------------
+
+# Upstream's README stays available; ours replaces it at the root.
+[[rename]]
+include = ["README.md"]
+find = "README.md"
+replace = "docs/upstream-README.md"
+min = 1
+
+[[rename]]
+include = ["packaging/**"]
+find = "ai.storyteller.wordcraft"
+replace = "{{this.app_id}}"
+min = 3
+
+[[copy]]
+from = "freeandiy/overlay"
+to = "."
+
+[[copy]]
+from = "freeandiy/assets/dmg"
+to = "packaging/macos/dmg"
+
+[[copy]]
+from = "freeandiy/templates/freeandiy.rs"
+to = "crates/ui-egui/src/freeandiy.rs"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/{{this.key}}.svg"
+to = "assets/app-icon/{{this.repo}}.svg"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/{{this.key}}.svg"
+to = "assets/app-icon/{{this.repo}}-small.svg"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/mark-128.png"
+to = "assets/app-icon/{{this.repo}}-mark.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/macos-1024.png"
+to = "assets/app-icon/{{this.repo}}-1024.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/{{this.key}}.icns"
+to = "assets/app-icon/{{this.repo}}.icns"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/{{this.key}}.ico"
+to = "assets/app-icon/{{this.repo}}.ico"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/{{this.key}}.svg"
+to = "assets/app-icon/hicolor/scalable/apps/{{this.app_id}}.svg"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/16.png"
+to = "assets/app-icon/hicolor/16x16/apps/{{this.app_id}}.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/24.png"
+to = "assets/app-icon/hicolor/24x24/apps/{{this.app_id}}.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/32.png"
+to = "assets/app-icon/hicolor/32x32/apps/{{this.app_id}}.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/48.png"
+to = "assets/app-icon/hicolor/48x48/apps/{{this.app_id}}.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/64.png"
+to = "assets/app-icon/hicolor/64x64/apps/{{this.app_id}}.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/128.png"
+to = "assets/app-icon/hicolor/128x128/apps/{{this.app_id}}.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/256.png"
+to = "assets/app-icon/hicolor/256x256/apps/{{this.app_id}}.png"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/hicolor/512.png"
+to = "assets/app-icon/hicolor/512x512/apps/{{this.app_id}}.png"

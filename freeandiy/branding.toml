@@ -1,0 +1,203 @@
+# FreeANDIY branding, shared by every FreeANDIY repository (source: FreeAndy21/freeandiy,
+# copied by its scripts/sync-common.sh; edit it there). Per-repository settings: app.toml.
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
+#
+# Everything outside freeandiy/ is generated from upstream + this directory by the rebrand tool
+# (freeandiy/tools/rebrand). Never hand-edit upstream files on `main`; change this file, a rule in
+# rules.toml or a patch in patches/ instead.
+
+[brand]
+name = "FreeANDIY"
+owner = "Free Andy Agency"
+domain = "freeandy.agency"
+website = "https://freeandiy.freeandy.agency"
+github_owner = "FreeAndy21"
+id_prefix = "agency.freeandy"
+maintainer = "FreeANDIY <licencie@freeandy.agency>"
+
+# From Visual identity/tokens/colors.css. Accents are highlighters: use sparingly.
+[colors]
+black = "#231F20"
+paper = "#F3F2F1"
+white = "#FFFFFF"
+rose = "#BE3E6B"
+pink = "#EA9999"
+azure = "#A3DDFA"
+yellow = "#FFD966"
+green = "#A7E48B"
+ink_70 = "#231F20B3"
+ink_50 = "#231F2080"
+ink_30 = "#231F204D"
+ink_15 = "#231F2026"
+ink_08 = "#231F2014"
+
+# From Visual identity/tokens/typography.css. All OFL 1.1, bundled under freeandiy/assets/fonts/.
+[fonts]
+mono = "IBM Plex Mono" # headings, short text, UI labels
+sans = "IBM Plex Sans" # UI where mono is too wide
+body = "Roboto"        # long-form text
+
+# From Visual identity/tokens/spacing.css: print-flat, square, hairlines instead of shadows.
+[shape]
+radius = 0
+radius_sm = 2
+radius_md = 4
+hairline = 1.0
+
+# App family. `color` is the icon field; colour = category, monogram = app.
+# Category hues come from the four highlighters; siblings vary saturation/lightness.
+[apps.photo]
+name = "FreeANDIY Photo"
+tagline = "image editor"
+repo = "freeandiy-photo"
+upstream = "storytold/photocraft"
+upstream_name = "PhotoCraft"
+monogram = "Ph"
+color = "#A3DDFA"
+label = "black"
+# Windows Installer ids: new GUIDs so FreeANDIY never upgrades or replaces an upstream install.
+# Never change them once released (MSI upgrades match on the UpgradeCode).
+msi_upgrade_code = "BACBA0AE-759D-4233-8188-373626E5857A"
+msi_component_guid = "E9712E68-F674-4641-BE9D-8A3FA96C4832"
+
+[apps.light]
+name = "FreeANDIY Light"
+tagline = "non-destructive photo editor"
+repo = "freeandiy-light"
+upstream = "storytold/lightcraft"
+upstream_name = "LightCraft"
+monogram = "Li"
+color = "#7DC1E3"
+label = "black"
+msi_upgrade_code = "C70D308F-AD7A-4FD4-B1CD-5056504AD487"
+msi_component_guid = "B56D3D8F-AF7B-49C7-8D93-A84304843263"
+
+[apps.vector]
+name = "FreeANDIY Vector"
+tagline = "vector illustration tool"
+repo = "freeandiy-vector"
+upstream = "storytold/vectorcraft"
+upstream_name = "VectorCraft"
+monogram = "Ve"
+color = "#FFD966"
+label = "black"
+msi_upgrade_code = "110C5190-6AE9-414D-8C14-3AACE99F44B8"
+msi_component_guid = "7D396BC6-57BC-4C32-92AA-D98937C80248"
+
+[apps.layout]
+name = "FreeANDIY Layout"
+tagline = "page layout and design editor"
+repo = "freeandiy-layout"
+upstream = "storytold/designcraft"
+upstream_name = "DesignCraft"
+monogram = "La"
+color = "#F2DFA6"
+label = "black"
+msi_upgrade_code = "0A5E2249-5BCF-4414-BF66-D5085456AC3A"
+msi_component_guid = "A5EA00DF-8842-421C-93F4-D71E210B95F7"
+
+[apps.effects]
+name = "FreeANDIY Effects"
+tagline = "motion graphics and compositing tool"
+repo = "freeandiy-effects"
+upstream = "storytold/effectcraft"
+upstream_name = "EffectCraft"
+monogram = "Ef"
+color = "#FFCC33"
+label = "black"
+msi_upgrade_code = "31F73F92-901A-4DBF-9000-C10C8A8B87AB"
+msi_component_guid = "FCDB62C1-80A6-4927-A78B-C54982E65E10"
+
+[apps.film]
+name = "FreeANDIY Film"
+tagline = "non-linear video editor"
+repo = "freeandiy-film"
+upstream = "storytold/filmcraft"
+upstream_name = "FilmCraft"
+monogram = "Fi"
+color = "#EA9999"
+label = "black"
+msi_upgrade_code = "DEA4E6FE-711D-4CFB-A662-1329EBBFE395"
+msi_component_guid = "EF1DD56F-A973-44C2-9A96-3454ACE80B65"
+
+[apps.sound]
+name = "FreeANDIY Sound"
+tagline = "audio recording and editing workstation"
+repo = "freeandiy-sound"
+upstream = "storytold/soundcraft"
+upstream_name = "SoundCraft"
+monogram = "So"
+color = "#D47C7C"
+label = "black"
+msi_upgrade_code = "14A0E25F-DEA0-4D67-8D7E-D51713506FF0"
+msi_component_guid = "3BD4BD8F-57A4-4E9C-ABFA-A565BF50C308"
+
+[apps.write]
+name = "FreeANDIY Write"
+tagline = "word processor"
+repo = "freeandiy-write"
+upstream = "storytold/wordcraft"
+upstream_name = "WordCraft"
+monogram = "Wr"
+color = "#A7E48B"
+label = "black"
+msi_upgrade_code = "729507BA-B8B0-4221-848D-DEE6536FFFAD"
+msi_component_guid = "D14B967F-B80C-4F1C-BD6D-AB086760EFFF"
+
+[apps.sheets]
+name = "FreeANDIY Sheets"
+tagline = "spreadsheet"
+repo = "freeandiy-sheets"
+upstream = "storytold/gridcraft"
+upstream_name = "GridCraft"
+monogram = "Sh"
+color = "#85CE64"
+label = "black"
+msi_upgrade_code = "421F6770-AD57-4991-9787-8FE656CA478B"
+msi_component_guid = "4CC28F03-0F96-464E-9C86-EC3920546B09"
+
+[apps.slides]
+name = "FreeANDIY Slides"
+tagline = "presentation editor"
+repo = "freeandiy-slides"
+upstream = "storytold/deckcraft"
+upstream_name = "DeckCraft"
+monogram = "Sl"
+color = "#C6DCBB"
+label = "black"
+msi_upgrade_code = "5BB35656-DD4B-4682-8143-CD3411812737"
+msi_component_guid = "81071293-EEFE-43CE-8992-2C96A0C74B1F"
+
+[apps.pdf]
+name = "FreeANDIY PDF"
+tagline = "PDF reader and editor"
+repo = "freeandiy-pdf"
+upstream = "storytold/pdfcraft"
+upstream_name = "PdfCraft"
+monogram = "Pd"
+color = "#A5B99C"
+label = "black"
+msi_upgrade_code = "75F562ED-8200-4BEF-B9B5-B7B4D25F7FBF"
+msi_component_guid = "B66ACB7F-DB16-48BA-ABD7-FA2DE9D20CCD"
+
+[apps.cad]
+name = "FreeANDIY CAD"
+tagline = "computer-aided design tool"
+repo = "freeandiy-cad"
+upstream = "storytold/cadcraft"
+upstream_name = "CadCraft"
+monogram = "Ca"
+color = "#BE3E6B"
+label = "paper" # black on rose is only 3.2:1
+
+[apps.launcher]
+name = "FreeANDIY Launcher"
+tagline = "launcher for the FreeANDIY apps"
+repo = "freeandiy-launcher"
+upstream = "storytold/craft-launcher"
+upstream_name = "Craft Launcher"
+monogram = "FA"
+color = "#231F20"
+label = "paper"
+msi_upgrade_code = "F7818BE8-522E-4313-8A12-89384F55832A"
+msi_component_guid = "AF0F0696-0456-44D8-96C1-21EA36DA4AF8"

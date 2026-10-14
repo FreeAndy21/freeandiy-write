@@ -1,0 +1,27 @@
+# This repository's FreeANDIY settings (branding.toml is shared by all FreeANDIY repositories).
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream WordCraft.
+
+app = "write" # which [apps.<id>] entry of branding.toml this repository builds
+
+[build]
+# cargo arguments for the release binaries, the tests sync-upstream.sh runs, and the web page.
+bins = "-p wordcraft -p wordcraft-cli"
+features = ""
+tests = "-p wordcraft-ui-egui -p wordcraft-engine -p wordcraft -p wordcraft-cli"
+web_index = "apps/wordcraft-web/index.html"
+# Environment for tests: English UI whatever the machine's locale.
+test_env = "WORDCRAFT_LANGUAGE=en"
+web_env = ""
+# Upstream has no test workflow of its own: freeandiy.yml runs build.tests on Linux.
+ci_tests = "true"
+
+[check]
+# check-branding.sh: extra allowed strings (regex) and Rust paths where the upstream name may stay
+# in string literals (git pathspecs, space-separated).
+allow = "ArtCraft Team and the WordCraft contributors"
+rs_exclude = ":!xtask/**"
+
+[msi]
+# Windows Installer component GUIDs beyond branding.toml's (new, so FreeANDIY never shares an
+# installed component with WordCraft). Never change them once released.
+second_guid = "266B1CA4-A846-4441-9C8D-5026DF942868"

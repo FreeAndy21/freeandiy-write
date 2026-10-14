@@ -1,0 +1,35 @@
+diff --git a/apps/wordcraft-cli/Cargo.toml b/apps/wordcraft-cli/Cargo.toml
+index 354b80b..0a8dfb6 100644
+--- a/apps/wordcraft-cli/Cargo.toml
++++ b/apps/wordcraft-cli/Cargo.toml
+@@ -6,8 +6,9 @@ license.workspace = true
+ publish = false
+ description = "WordCraft command line: convert, inspect, render, run commands, MCP server"
+ 
++# FreeANDIY: the executable carries the product name; the package keeps upstream's.
+ [[bin]]
+-name = "wordcraft-cli"
++name = "freeandiy-write-cli"
+ path = "src/main.rs"
+ 
+ [lints]
+diff --git a/apps/wordcraft/Cargo.toml b/apps/wordcraft/Cargo.toml
+index 7e79f24..1088043 100644
+--- a/apps/wordcraft/Cargo.toml
++++ b/apps/wordcraft/Cargo.toml
+@@ -4,9 +4,14 @@ version.workspace = true
+ edition.workspace = true
+ license.workspace = true
+ publish = false
+-default-run = "wordcraft"
++default-run = "freeandiy-write"
+ description = "WordCraft desktop app"
+ 
++# FreeANDIY: the executable carries the product name; the package keeps upstream's.
++[[bin]]
++name = "freeandiy-write"
++path = "src/main.rs"
++
+ [lints]
+ workspace = true
+ 
