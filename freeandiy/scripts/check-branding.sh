@@ -23,8 +23,8 @@ WEB_INDEX="$(fa_get build.web_index "")"
 EXTRA_ALLOW="$(fa_get check.allow "")"
 read -r -a RS_EXCLUDE <<<"$(fa_get check.rs_exclude ":!xtask/**")"
 
-# GNU strings reads UTF-8 text whole with -e S (translations with accents); BSD strings can't.
-if strings -e S -n 6 /dev/null >/dev/null 2>&1; then STRINGS="strings -e S -n 6"; else STRINGS="strings -n 6"; fi
+# Text runs of built files, UTF-8 whole and the same on macOS and Linux (strings.py).
+STRINGS="python3 $(dirname "${BASH_SOURCE[0]}")/strings.py"
 BANNED='ArtCraft|artcraft|storyteller|getartcraft|discord\.gg|Crafting Apps'
 # Allowed mentions: the About attribution (English and translated), upstream's copyright line, upstream's
 # credit for its own work, and app-specific fixtures (check.allow).
