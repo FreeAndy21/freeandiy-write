@@ -83,7 +83,7 @@ for target in "$@"; do
     scan="$f"
     stripped="$(mktemp)"
     if cp "$f" "$stripped" 2>/dev/null && strip "$stripped" >/dev/null 2>&1; then scan="$stripped"; fi
-    hits="$($STRINGS "$scan" 2>/dev/null | grep -E "$BANNED|$UP" | grep -v -E "$ALLOWED_STRINGS" | grep -v -E "$CODE_STRINGS" | sort -u | head -20 || true)"
+    hits="$($STRINGS "$scan" 2>/dev/null | grep -a -E "$BANNED|$UP" | grep -a -v -E "$ALLOWED_STRINGS" | grep -a -v -E "$CODE_STRINGS" | sort -u | head -20 || true)"
     rm -f "$stripped"
     if [ -n "$hits" ]; then
       echo "  $f:"
