@@ -108,6 +108,14 @@ jobs:
         run: |
           curl -fsSL "https://github.com/trunk-rs/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz" \
             | tar -xz -C "$HOME/.cargo/bin" trunk
+      - name: Install the wasm-bindgen CLI (apps whose web build calls it directly)
+        run: |
+          if grep -q 'wasm-bindgen' packaging/web/package.sh; then
+            v="$(grep -A1 '^name = "wasm-bindgen"$' Cargo.lock | sed -n 's/^version = "\(.*\)"$/\1/p')"
+            curl -fsSL "https://github.com/rustwasm/wasm-bindgen/releases/download/${v}/wasm-bindgen-${v}-x86_64-unknown-linux-musl.tar.gz" \
+              | tar -xz -C "$HOME/.cargo/bin" --strip-components=1 "wasm-bindgen-${v}-x86_64-unknown-linux-musl/wasm-bindgen"
+            wasm-bindgen --version
+          fi
       - name: Package
         run: |
           . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
