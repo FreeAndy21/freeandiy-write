@@ -528,3 +528,10 @@ include = ["crates/ui-egui/src/i18n/tests.rs"]
 find = 'matches!(l.code(), "pl" | "it" | "hu" | "bg")'
 replace = 'matches!(l.code(), "pl" | "it" | "hu" | "bg" | "sk")'
 min = 1
+
+[[replace]]
+name = "Options test: a checkbox the page still has (the community button option is gone)"
+include = ["crates/ui-egui/src/lib.rs"]
+find = 'h.query_by_label("Show the community button in the title bar")'
+replace = 'h.query_by_label("Show the mini toolbar when text is selected")'
+min = 1

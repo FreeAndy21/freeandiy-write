@@ -155,7 +155,8 @@ mod tests {
     #[test]
     fn light_and_dark_are_paper_and_ink() {
         let (light, dark) = (Tokens::light(), Tokens::dark());
-        assert_eq!((light.ribbon, light.text, light.accent), (PAPER, BLACK, ROSE));
-        assert_eq!((dark.ribbon, dark.text, dark.accent), (BLACK, PAPER, PINK));
+        // The text is the neutral grey nearest the ink (and the paper), see `tokens`.
+        assert_eq!((light.ribbon, light.text, light.accent), (PAPER, Color32::from_gray(0x23), ROSE));
+        assert_eq!((dark.ribbon, dark.text, dark.accent), (BLACK, Color32::from_gray(0xF2), PINK));
     }
 }
