@@ -28,32 +28,16 @@ const fn channel(x: u8, y: u8, t: f32) -> u8 {
     (x as f32 + (y as f32 - x as f32) * t + 0.5) as u8
 }
 
-/// The UI font: IBM Plex Sans on the desktop (SIL Open Font License 1.1; licence in
-/// freeandiy/assets/fonts/). The web build keeps upstream's bundled Inter, so the wasm does not
-/// grow (static hosts cap a file at 25 MiB).
+/// The UI font. FreeANDIY Write keeps upstream's Inter: the ribbon is laid out to Inter's line
+/// height, and IBM Plex Sans, whose lines are about 7% taller, makes its groups overflow. The
+/// hook stays so the face can change in one place.
 pub mod fonts {
-    #[cfg(not(target_arch = "wasm32"))]
-    pub fn sans_regular() -> &'static [u8] {
-        include_bytes!("../../../freeandiy/assets/fonts/IBMPlexSans-Regular.ttf")
-    }
-    #[cfg(not(target_arch = "wasm32"))]
-    pub fn sans_medium() -> &'static [u8] {
-        include_bytes!("../../../freeandiy/assets/fonts/IBMPlexSans-Medium.ttf")
-    }
-    #[cfg(not(target_arch = "wasm32"))]
-    pub fn sans_semibold() -> &'static [u8] {
-        include_bytes!("../../../freeandiy/assets/fonts/IBMPlexSans-SemiBold.ttf")
-    }
-
-    #[cfg(target_arch = "wasm32")]
     pub fn sans_regular() -> &'static [u8] {
         include_bytes!("../../../assets/fonts/Inter-Regular.ttf")
     }
-    #[cfg(target_arch = "wasm32")]
     pub fn sans_medium() -> &'static [u8] {
         include_bytes!("../../../assets/fonts/Inter-Medium.ttf")
     }
-    #[cfg(target_arch = "wasm32")]
     pub fn sans_semibold() -> &'static [u8] {
         include_bytes!("../../../assets/fonts/Inter-SemiBold.ttf")
     }
@@ -72,7 +56,6 @@ pub fn tokens(t: Tokens) -> Tokens {
             panel: mix(BLACK, PAPER, 0.04),
             border: ink(0.18),
             border_strong: ink(0.32),
-            text: PAPER,
             text_dim: ink(0.75),
             icon: ink(0.88),
             hover: ink(0.12),
@@ -81,7 +64,10 @@ pub fn tokens(t: Tokens) -> Tokens {
             accent: PINK,
             accent_text: PINK,
             on_accent: BLACK,
-            input: mix(BLACK, Color32::BLACK, 0.30),
+            // Neutral greys: the equation pictures are tinted from text to input in pure grey.
+            text: Color32::from_gray(0xF2),
+            input: Color32::from_gray(0x18),
+            input_border: Color32::from_gray(0x8A),
             status_bar: mix(BLACK, Color32::BLACK, 0.30),
             menu: mix(BLACK, PAPER, 0.04),
             ..t
@@ -95,7 +81,8 @@ pub fn tokens(t: Tokens) -> Tokens {
             panel: PAPER,
             border: ink(0.15),
             border_strong: ink(0.28),
-            text: BLACK,
+            // Neutral grey ink: the equation pictures are tinted from text to input in pure grey.
+            text: Color32::from_gray(0x23),
             text_dim: ink(0.70),
             icon: ink(0.85),
             hover: ink(0.08),
@@ -105,6 +92,7 @@ pub fn tokens(t: Tokens) -> Tokens {
             accent_text: ROSE,
             on_accent: WHITE,
             input: WHITE,
+            input_border: Color32::from_gray(0x76),
             status_bar: ink(0.07),
             menu: PAPER,
             ..t

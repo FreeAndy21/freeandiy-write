@@ -511,3 +511,20 @@ include = ["apps/wordcraft/src/default_apps.rs"]
 find = '"Exec=wordcraft %F"'
 replace = '"Exec={{this.repo}} %F"'
 min = 1
+
+# ---------------------------------------------------------------------------------------------
+# Upstream's catalog checks, with the partial Slovak catalog FreeANDIY adds.
+
+[[replace]]
+name = "catalog size check: Slovak is partial (menus, commands and common dialogs)"
+include = ["crates/ui-egui/src/i18n/tests.rs"]
+find = 'assert!(l.code == "en" || entries.len() > 700'
+replace = 'assert!(l.code == "en" || l.code == "sk" || entries.len() > 700'
+min = 1
+
+[[replace]]
+name = "Polish-covers-all check: not against Slovak, which has FreeANDIY's own keys"
+include = ["crates/ui-egui/src/i18n/tests.rs"]
+find = 'matches!(l.code(), "pl" | "it" | "hu" | "bg")'
+replace = 'matches!(l.code(), "pl" | "it" | "hu" | "bg" | "sk")'
+min = 1
