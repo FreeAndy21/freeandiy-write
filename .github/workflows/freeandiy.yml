@@ -65,10 +65,17 @@ jobs:
     name: tests (Linux)
     # Only for apps whose upstream has no test workflow of its own (app.toml: build.ci_tests).
     runs-on: ubuntu-latest
+    env:
+      # Big workspaces outgrow the runner's disk and memory with debug info; tests don't need it.
+      CARGO_PROFILE_DEV_DEBUG: "0"
+      CARGO_PROFILE_TEST_DEBUG: "0"
     steps:
       - uses: actions/checkout@v4
       - name: App settings
         run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
+      - name: Free disk space on the runner
+        if: env.FA_CI_TESTS == 'true'
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL && df -h /
       - name: Install Linux system dependencies (egui/winit/rfd, audio, app.toml build.apt)
         if: env.FA_CI_TESTS == 'true'
         run: |
