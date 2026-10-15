@@ -48,7 +48,7 @@ jobs:
         run: packaging/macos/package.sh --arch universal
       - name: Branding check (binaries)
         run: |
-          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          eval "$(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')"
           freeandiy/scripts/check-branding.sh $(printf 'target/aarch64-apple-darwin/release/%s ' $FA_EXES)
       - uses: actions/upload-artifact@v4
         with: { name: macos, path: dist/release/*, if-no-files-found: error }
@@ -72,7 +72,7 @@ jobs:
         run: packaging/linux/package.sh
       - name: Branding check (binaries)
         run: |
-          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          eval "$(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')"
           freeandiy/scripts/check-branding.sh $(printf 'target/release/%s ' $FA_EXES)
       - uses: actions/upload-artifact@v4
         with: { name: linux, path: dist/release/*, if-no-files-found: error }
@@ -118,7 +118,7 @@ jobs:
           fi
       - name: Package
         run: |
-          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          eval "$(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')"
           env $FA_WEB_ENV packaging/web/package.sh
       - name: Branding check (web build)
         run: freeandiy/scripts/check-branding.sh dist/web
