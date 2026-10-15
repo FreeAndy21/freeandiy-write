@@ -535,3 +535,10 @@ include = ["crates/ui-egui/src/lib.rs"]
 find = 'h.query_by_label("Show the community button in the title bar")'
 replace = 'h.query_by_label("Show the mini toolbar when text is selected")'
 min = 1
+
+[[replace]]
+name = "web page: the favicon is our icon"
+include = ["apps/wordcraft-web/index.html"]
+find = "assets/app-icon/wordcraft.ico"
+replace = "assets/app-icon/{{this.repo}}.ico"
+min = 1
