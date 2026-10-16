@@ -61,6 +61,7 @@
 
     <Feature Id="Main" Title="FreeANDIY Write" Level="1">
       <ComponentGroupRef Id="WordcraftFiles" />
+      <ComponentGroupRef Id="FreeandiyNotices" />
     </Feature>
   </Package>
 
@@ -153,6 +154,13 @@
       <Component Id="WordcraftCli">
         <File Id="WordcraftCliExe" Source="$(var.BinDir)\freeandiy-write-cli.exe" KeyPath="yes" />
       </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- FreeANDIY: licences, NOTICE, attribution, font licences and brand terms (Apache-2.0 4(d)),
+       staged by package.ps1. -->
+  <Fragment>
+    <ComponentGroup Id="FreeandiyNotices" Directory="INSTALLFOLDER">
+      <Files Include="$(var.NoticesDir)\*" />
     </ComponentGroup>
   </Fragment>
 </Wix>
