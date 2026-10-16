@@ -140,9 +140,12 @@ if ($env:CRAFT_FONTS_DIR) {
     if (Test-Path $lic) { Copy-Item $lic (Join-Path $FaNotices "OFL-$($_.Name).txt") }
   }
 }
-foreach ($f in 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md') {
+foreach ($f in 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE') {
   if (-not (Test-Path (Join-Path $FaNotices $f))) { throw "MSI notices: $f is missing" }
 }
+# Leave out what upstream's .wxs already installs itself (two components for one file fail the build).
+$FaWxs = (Get-ChildItem (Join-Path $PSScriptRoot '*.wxs') | ForEach-Object { Get-Content -Raw $_.FullName }) -join "`n"
+Get-ChildItem $FaNotices | Where-Object { $FaWxs -match [regex]::Escape('\' + $_.Name + '"') } | Remove-Item
 
 $Msi = Join-Path $Dist "freeandiy-write-$Version-windows-$Arch.msi"
 Invoke-Native 'wix build' {
