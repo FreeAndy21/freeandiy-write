@@ -542,3 +542,61 @@ include = ["apps/wordcraft-web/index.html"]
 find = "assets/app-icon/wordcraft.ico"
 replace = "assets/app-icon/{{this.repo}}.ico"
 min = 1
+
+# ---------------------------------------------------------------------------------------------
+# Shared by every FreeANDIY app (FreeAndy21/freeandiy, common/rules-msi-notices.toml):
+# the Windows MSI installs the licences, NOTICE, the attribution, the font licences and the brand
+# terms next to the app, like the portable ZIP and the other packages (Apache-2.0 4(d)).
+
+[[replace]]
+name = "Windows MSI: stage the notices before wix build"
+include = ["packaging/windows/package.ps1"]
+regex = '''(?m)^(\$Msi = Join-Path \$Dist )'''
+replace = '''# FreeANDIY: the MSI installs these next to the app (Apache-2.0 4(d); same set as the portable ZIP).
+$$FaNotices = Join-Path $$Stage 'freeandiy-notices'
+Remove-Item -Recurse -Force $$FaNotices -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Force -Path $$FaNotices | Out-Null
+foreach ($$f in 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'ASSETS.md') {
+  $$p = Join-Path $$Root $$f
+  if (Test-Path $$p) { Copy-Item $$p $$FaNotices }
+}
+Copy-Item (Join-Path $$Root 'freeandiy\assets\fonts\OFL-*.txt') $$FaNotices
+Copy-Item (Join-Path $$Root 'freeandiy\assets\brand\LICENSE-brand.txt') (Join-Path $$FaNotices 'LICENSE-FreeANDIY-brand.txt')
+if ($$env:CRAFT_FONTS_DIR) {
+  Get-ChildItem -Path (Join-Path $$env:CRAFT_FONTS_DIR 'fonts') -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+    $$lic = Join-Path $$_.FullName 'OFL.txt'
+    if (Test-Path $$lic) { Copy-Item $$lic (Join-Path $$FaNotices "OFL-$$($$_.Name).txt") }
+  }
+}
+foreach ($$f in 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md') {
+  if (-not (Test-Path (Join-Path $$FaNotices $$f))) { throw "MSI notices: $$f is missing" }
+}
+
+${1}'''
+
+[[replace]]
+name = "Windows MSI: pass the notices folder to wix build"
+include = ["packaging/windows/package.ps1"]
+regex = '''(wix build [^\n]*?-arch \$Arch)'''
+replace = '''${1} -d "NoticesDir=$$FaNotices"'''
+
+[[replace]]
+name = "Windows MSI: install the notices (feature)"
+include = ["packaging/windows/*.wxs"]
+regex = '''(?m)^(\s*)(<ComponentGroupRef Id="[A-Za-z]+Files" />)'''
+replace = '''${1}${2}
+${1}<ComponentGroupRef Id="FreeandiyNotices" />'''
+
+[[replace]]
+name = "Windows MSI: install the notices (files)"
+include = ["packaging/windows/*.wxs"]
+exclude = ["packaging/windows/installer-ui.wxs"]
+regex = '''(?m)^</Wix>'''
+replace = '''  <!-- FreeANDIY: licences, NOTICE, attribution, font licences and brand terms (Apache-2.0 4(d)),
+       staged by package.ps1. -->
+  <Fragment>
+    <ComponentGroup Id="FreeandiyNotices" Directory="INSTALLFOLDER">
+      <Files Include="$$(var.NoticesDir)\*" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>'''

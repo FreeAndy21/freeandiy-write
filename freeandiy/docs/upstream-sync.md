@@ -32,7 +32,7 @@ freeandiy/scripts/sync-upstream.sh --push     # same, then push upstream-main an
 - **`patch 000N-....patch no longer applies`**: upstream changed lines one of our patches edits.
   Refresh it:
   ```sh
-  git worktree add ../fa-work upstream-main                # pristine upstream
+  git worktree add --detach ../fa-work upstream-main       # pristine upstream (--detach: never check the branch out)
   cd ../fa-work && git apply --3way ../<this repo>/freeandiy/patches/000N-*.patch
   # resolve the conflicts by hand, then:
   git diff -- <the patch's files> > ../<this repo>/freeandiy/patches/000N-....patch
@@ -43,6 +43,9 @@ freeandiy/scripts/sync-upstream.sh --push     # same, then push upstream-main an
 - **`delete: <path> does not exist upstream any more`**: drop it from `delete`.
 
 Commit the fix in `freeandiy/` (`brand: ...`) and run the sync again.
+
+If `Cargo.lock` now pins a different commit of a storytold git dependency, update the mirror
+first (see `dependencies.md`), or the build fails fetching it.
 
 After a sync, also skim `git diff <old main> main` for new user-visible text containing
 the upstream app name or links to ArtCraft services; `check-branding.sh` catches the known patterns.

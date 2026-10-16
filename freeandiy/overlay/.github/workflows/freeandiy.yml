@@ -13,6 +13,23 @@ on:
 permissions:
   contents: read
 
+env:
+  # Upstream's git dependencies are fetched from FreeANDIY mirrors on FreeAndy21 (same commits), so a
+  # build never depends on github.com/storytold; any other storytold URL fails the build on purpose.
+  # Keep in sync with common/docs/dependencies.md.
+  CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+  GIT_CONFIG_COUNT: "5"
+  GIT_CONFIG_KEY_0: url.https://github.com/FreeAndy21/freeandiy-craft-libs.insteadOf
+  GIT_CONFIG_VALUE_0: https://github.com/storytold/craft-libs
+  GIT_CONFIG_KEY_1: url.https://github.com/FreeAndy21/freeandiy-winprint.insteadOf
+  GIT_CONFIG_VALUE_1: https://github.com/storytold/winprint.rs
+  GIT_CONFIG_KEY_2: url.https://github.com/FreeAndy21/freeandiy-pdf.insteadOf
+  GIT_CONFIG_VALUE_2: https://github.com/storytold/pdfcraft
+  GIT_CONFIG_KEY_3: url.https://github.com/FreeAndy21/freeandiy-film.insteadOf
+  GIT_CONFIG_VALUE_3: https://github.com/storytold/filmcraft
+  GIT_CONFIG_KEY_4: url.https://storytold-is-not-used.invalid/.insteadOf
+  GIT_CONFIG_VALUE_4: https://github.com/storytold/
+
 concurrency:
   group: freeandiy-${{ github.ref }}
   cancel-in-progress: true

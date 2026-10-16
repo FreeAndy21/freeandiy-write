@@ -15,6 +15,11 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      windows_only:
+        description: "Only build and check the Windows packages (no release)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -22,9 +27,25 @@ permissions:
 env:
   TRUNK_VERSION: 0.21.14
   NFPM_VERSION: 2.43.0
+  # Upstream's git dependencies are fetched from FreeANDIY mirrors on FreeAndy21 (same commits), so a
+  # build never depends on github.com/storytold; any other storytold URL fails the build on purpose.
+  # Keep in sync with common/docs/dependencies.md.
+  CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+  GIT_CONFIG_COUNT: "5"
+  GIT_CONFIG_KEY_0: url.https://github.com/FreeAndy21/freeandiy-craft-libs.insteadOf
+  GIT_CONFIG_VALUE_0: https://github.com/storytold/craft-libs
+  GIT_CONFIG_KEY_1: url.https://github.com/FreeAndy21/freeandiy-winprint.insteadOf
+  GIT_CONFIG_VALUE_1: https://github.com/storytold/winprint.rs
+  GIT_CONFIG_KEY_2: url.https://github.com/FreeAndy21/freeandiy-pdf.insteadOf
+  GIT_CONFIG_VALUE_2: https://github.com/storytold/pdfcraft
+  GIT_CONFIG_KEY_3: url.https://github.com/FreeAndy21/freeandiy-film.insteadOf
+  GIT_CONFIG_VALUE_3: https://github.com/storytold/filmcraft
+  GIT_CONFIG_KEY_4: url.https://storytold-is-not-used.invalid/.insteadOf
+  GIT_CONFIG_VALUE_4: https://github.com/storytold/
 
 jobs:
   macos:
+    if: ${{ !inputs.windows_only }}
     runs-on: macos-14
     env:
       APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
@@ -54,6 +75,7 @@ jobs:
         with: { name: macos, path: dist/release/*, if-no-files-found: error }
 
   linux:
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-22.04 # oldest supported glibc, so the AppImage runs on newer distros
     steps:
       - uses: actions/checkout@v4
@@ -93,10 +115,23 @@ jobs:
           WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         run: packaging/windows/package.ps1 -Arch x64
+      - name: Check the MSI installs the notices
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem dist/release/*.msi | Select-Object -First 1
+          $out = Join-Path $env:RUNNER_TEMP 'msi-admin'
+          $p = Start-Process msiexec -Wait -PassThru -ArgumentList '/a', "`"$($msi.FullName)`"", '/qn', "TARGETDIR=`"$out`""
+          if ($p.ExitCode -ne 0) { throw "msiexec /a exited with $($p.ExitCode)" }
+          foreach ($f in 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'LICENSE-FreeANDIY-brand.txt') {
+            $hit = Get-ChildItem -Recurse -File -Path $out -Filter $f | Select-Object -First 1
+            if (-not $hit) { throw "$f is missing from $($msi.Name)" }
+            Write-Host "ok $f -> $($hit.FullName.Substring($out.Length))"
+          }
       - uses: actions/upload-artifact@v4
         with: { name: windows, path: dist/release/*, if-no-files-found: error }
 
   web:
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -127,6 +162,7 @@ jobs:
 
   release:
     needs: [macos, linux, windows, web]
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
