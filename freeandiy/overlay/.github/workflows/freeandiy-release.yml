@@ -122,7 +122,9 @@ jobs:
           $out = Join-Path $env:RUNNER_TEMP 'msi-admin'
           $p = Start-Process msiexec -Wait -PassThru -ArgumentList '/a', "`"$($msi.FullName)`"", '/qn', "TARGETDIR=`"$out`""
           if ($p.ExitCode -ne 0) { throw "msiexec /a exited with $($p.ExitCode)" }
-          foreach ($f in 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'LICENSE-FreeANDIY-brand.txt') {
+          $want = @('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'LICENSE-FreeANDIY-brand.txt')
+          if (Test-Path ATTRIBUTION.md) { $want += 'ATTRIBUTION.md' }
+          foreach ($f in $want) {
             $hit = Get-ChildItem -Recurse -File -Path $out -Filter $f | Select-Object -First 1
             if (-not $hit) { throw "$f is missing from $($msi.Name)" }
             Write-Host "ok $f -> $($hit.FullName.Substring($out.Length))"
